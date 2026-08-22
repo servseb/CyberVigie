@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldAlert, BookOpen, Globe, Send, AlertTriangle, Cpu, ShieldCheck } from 'lucide-react';
+import { ShieldAlert, Globe, Send, AlertTriangle, Cpu, ShieldCheck, BarChart3 } from 'lucide-react';
 
 export default function TabNavigation({ activeTab, setActiveTab, scraperCount = 7 }) {
   const tabs = [
@@ -16,10 +16,10 @@ export default function TabNavigation({ activeTab, setActiveTab, scraperCount = 
       count: 9,
     },
     {
-      id: 'underground',
-      label: 'Underground 🏴‍☠️',
-      icon: Globe,
-      count: 346,
+      id: 'monthly-synthesis',
+      label: 'Synthèse Mensuelle & Pays 📊',
+      icon: BarChart3,
+      count: '2026',
     },
     {
       id: 'telegram',

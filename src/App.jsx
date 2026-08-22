@@ -3,7 +3,7 @@ import Header from './components/Header';
 import TabNavigation from './components/TabNavigation';
 import VictimsTracker from './components/VictimsTracker';
 import CyberBestPractices from './components/CyberBestPractices';
-import UndergroundForums from './components/UndergroundForums';
+import MonthlyCountrySynthesis from './components/MonthlyCountrySynthesis';
 import TelegramTracker from './components/TelegramTracker';
 import AnssiAlertes from './components/AnssiAlertes';
 import ScraperConfig from './components/ScraperConfig';
@@ -15,7 +15,6 @@ import {
   MOCK_TOP_GROUPS,
   MOCK_CONTINENTS,
   MOCK_TOP_COUNTRIES,
-  MOCK_UNDERGROUND_FORUMS,
   MOCK_TELEGRAM_CHANNELS,
   MOCK_ANSSI_ALERTS,
   MOCK_SCRAPER_SOURCES
@@ -68,7 +67,6 @@ export default function App() {
     }
   }, [customVictims]);
 
-  // Combined Victims List (Custom items + Live/Mock victims)
   const victims = [...customVictims, ...baseVictims];
 
   // Scraper Sources State with LocalStorage Persistence
@@ -94,13 +92,6 @@ export default function App() {
   }, [scraperSources]);
 
   // Persistent Custom Tab Items
-  const [customUndergroundForums, setCustomUndergroundForums] = useState(() => {
-    try {
-      const saved = localStorage.getItem('cybervigie_custom_underground');
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
-
   const [customTelegramChannels, setCustomTelegramChannels] = useState(() => {
     try {
       const saved = localStorage.getItem('cybervigie_custom_telegram');
@@ -117,13 +108,12 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('cybervigie_custom_underground', JSON.stringify(customUndergroundForums));
       localStorage.setItem('cybervigie_custom_telegram', JSON.stringify(customTelegramChannels));
       localStorage.setItem('cybervigie_custom_anssi', JSON.stringify(customAnssiAlerts));
     } catch (e) {
       console.warn('Erreur sauvegarde custom tabs:', e);
     }
-  }, [customUndergroundForums, customTelegramChannels, customAnssiAlerts]);
+  }, [customTelegramChannels, customAnssiAlerts]);
 
   // Modals
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
@@ -213,7 +203,7 @@ export default function App() {
     setTimeout(() => setToastMessage(''), 3500);
   };
 
-  // AUTOMATED BACKGROUND REFRESH SCHEDULER ACCORDING TO FREQUENCIES
+  // AUTOMATED BACKGROUND REFRESH SCHEDULER
   useEffect(() => {
     const interval = setInterval(async () => {
       const now = Date.now();
@@ -353,8 +343,8 @@ export default function App() {
           <CyberBestPractices />
         )}
 
-        {activeTab === 'underground' && (
-          <UndergroundForums forums={[...customUndergroundForums, ...MOCK_UNDERGROUND_FORUMS]} />
+        {activeTab === 'monthly-synthesis' && (
+          <MonthlyCountrySynthesis victims={victims} />
         )}
 
         {activeTab === 'telegram' && (
