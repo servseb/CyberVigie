@@ -3,19 +3,13 @@ import {
   Cpu,
   Plus,
   Search,
-  Download,
-  Upload,
   Play,
   CheckCircle2,
   Clock,
   Globe,
-  Radio,
-  Rss,
   ExternalLink,
-  Edit2,
   Trash2,
   ShieldCheck,
-  Terminal,
   Database
 } from 'lucide-react';
 import ScraperModal from './ScraperModal';
@@ -29,7 +23,6 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
   const [editingSource, setEditingSource] = useState(null);
   const [now, setNow] = useState(Date.now());
 
-  // Test Runner State
   const [runningTestId, setRunningTestId] = useState(null);
   const [testConsoleLogs, setTestConsoleLogs] = useState({});
 
@@ -81,7 +74,7 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
         country_code: comp.code,
         website: sourceObj.url.replace(/^https?:\/\//, '').split('/')[0] || 'flux-securite.fr',
         screenshot: '',
-        description: `Nouvelles données de la société ${comp.company} extraites via le scraper [${sourceObj.type}] configuré sur ${sourceObj.name}.`,
+        description: `Données de la société ${comp.company} extraites via le scraper [${sourceObj.type}] configuré sur ${sourceObj.name}.`,
         claim_url: sourceObj.url,
         sector: comp.sector,
         status: 'CRITIQUE',
@@ -157,7 +150,7 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
         ...prev,
         [source.id]: [
           ...(prev[source.id] || []),
-          `[${new Date().toLocaleTimeString()}] SUCCÈS — ${newTestItems.length} nouvelles sociétés extraites avec succès.`
+          `[${new Date().toLocaleTimeString()}] SUCCÈS — ${newTestItems.length} nouvelles sociétés extraites.`
         ]
       }));
 
@@ -204,21 +197,21 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Banner */}
-      <div className="cyber-card p-6 bg-white border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="pixar-card p-6 bg-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600 shrink-0">
-            <ShieldCheck className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-3xl bg-sky-100 border-2 border-sky-300 flex items-center justify-center text-sky-600 shrink-0 shadow-sm">
+            <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-extrabold text-slate-900 font-sans">
-                GESTION DES SOURCES & SCRAPERS CADENCÉS
+              <h2 className="text-lg font-black text-slate-900 font-sans uppercase">
+                GESTION DES SOURCES & SCRAPERS ⚙️
               </h2>
-              <span className="text-xs font-mono text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 font-bold">
+              <span className="text-xs font-sans font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border-2 border-emerald-300">
                 PLANIFICATEUR ACTIF
               </span>
             </div>
-            <p className="text-xs text-slate-500 font-sans mt-0.5">
+            <p className="text-xs text-sky-700 font-sans font-bold mt-0.5">
               Extraction automatique des sociétés ciblées selon la cadence configurée (5 min, 15 min, 1h...)
             </p>
           </div>
@@ -229,94 +222,93 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
             setEditingSource(null);
             setIsModalOpen(true);
           }}
-          className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold font-sans text-xs transition-all flex items-center gap-1.5 shadow-md shadow-indigo-500/20 cursor-pointer whitespace-nowrap"
+          className="pixar-btn-3d px-5 py-3 bg-sky-500 hover:bg-sky-600 text-white font-extrabold font-sans text-xs flex items-center gap-2 shadow-md cursor-pointer whitespace-nowrap"
         >
           <Plus className="w-4 h-4" />
-          <span>Ajouter une Source</span>
+          <span>Ajouter une Source 🚀</span>
         </button>
       </div>
 
-      {/* Grid Overview Stats */}
+      {/* Grid Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="cyber-card p-4 bg-white border border-slate-200 flex items-center justify-between">
+        <div className="pixar-card p-5 bg-white flex items-center justify-between">
           <div>
-            <span className="text-xs font-mono text-slate-500 font-bold uppercase">Total Sources</span>
-            <div className="text-2xl font-extrabold text-slate-900 mt-0.5">{sources.length}</div>
-            <span className="text-xs text-indigo-600 font-semibold">Flux & APIs</span>
+            <span className="text-xs font-mono font-bold text-sky-800 uppercase">Total Sources</span>
+            <div className="text-3xl font-extrabold text-slate-900 mt-1">{sources.length}</div>
+            <span className="text-xs text-sky-600 font-bold">Flux & APIs</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
+          <div className="w-10 h-10 rounded-2xl bg-sky-100 border-2 border-sky-200 flex items-center justify-center text-sky-600">
             <Globe className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="cyber-card p-4 bg-white border border-slate-200 flex items-center justify-between">
+        <div className="pixar-card p-5 bg-white flex items-center justify-between">
           <div>
-            <span className="text-xs font-mono text-slate-500 font-bold uppercase">Actifs</span>
-            <div className="text-2xl font-extrabold text-emerald-600 mt-0.5">{activeCount}</div>
-            <span className="text-xs text-slate-500">En cours d extraction</span>
+            <span className="text-xs font-mono font-bold text-emerald-800 uppercase">Actifs</span>
+            <div className="text-3xl font-extrabold text-emerald-600 mt-1">{activeCount}</div>
+            <span className="text-xs text-emerald-600 font-bold">En cours d extraction</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+          <div className="w-10 h-10 rounded-2xl bg-emerald-100 border-2 border-emerald-200 flex items-center justify-center text-emerald-600">
             <CheckCircle2 className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="cyber-card p-4 bg-white border border-slate-200 flex items-center justify-between">
+        <div className="pixar-card p-5 bg-white flex items-center justify-between">
           <div>
-            <span className="text-xs font-mono text-slate-500 font-bold uppercase">Boucle Heartbeat</span>
-            <div className="text-2xl font-extrabold text-purple-600 mt-0.5">10s</div>
-            <span className="text-xs text-emerald-600 font-semibold">Vérification temps réel</span>
+            <span className="text-xs font-mono font-bold text-purple-800 uppercase">Heartbeat</span>
+            <div className="text-3xl font-extrabold text-purple-600 mt-1">10s</div>
+            <span className="text-xs text-purple-600 font-bold">Vérification temps réel</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600">
+          <div className="w-10 h-10 rounded-2xl bg-purple-100 border-2 border-purple-200 flex items-center justify-center text-purple-600">
             <Clock className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="cyber-card p-4 bg-white border border-slate-200 flex items-center justify-between">
+        <div className="pixar-card p-5 bg-white flex items-center justify-between">
           <div>
-            <span className="text-xs font-mono text-slate-500 font-bold uppercase">Actes Répertoriés</span>
-            <div className="text-2xl font-extrabold text-slate-900 mt-0.5">{totalScrapedItems.toLocaleString()}</div>
-            <span className="text-xs text-slate-500">Éléments indexés</span>
+            <span className="text-xs font-mono font-bold text-amber-800 uppercase">Actes Répertoriés</span>
+            <div className="text-3xl font-extrabold text-slate-900 mt-1">{totalScrapedItems.toLocaleString()}</div>
+            <span className="text-xs text-amber-600 font-bold">Éléments indexés</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700">
+          <div className="w-10 h-10 rounded-2xl bg-amber-100 border-2 border-amber-200 flex items-center justify-center text-amber-600">
             <Database className="w-5 h-5" />
           </div>
         </div>
       </div>
 
-      {/* Sources Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Sources Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {filteredSources.map((source) => {
           const isTesting = runningTestId === source.id;
-          const logs = testConsoleLogs[source.id] || [];
           const nextScrapeStr = getNextScrapeText(source);
 
           return (
-            <div key={source.id} className="cyber-card p-5 bg-white border border-slate-200 hover:border-indigo-300 transition-all space-y-4">
+            <div key={source.id} className="pixar-card p-6 bg-white space-y-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600 shrink-0">
+                  <div className="w-10 h-10 rounded-2xl bg-sky-100 border-2 border-sky-300 flex items-center justify-center text-sky-600 shrink-0">
                     <Globe className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-slate-900 font-sans">{source.name}</h3>
+                    <h3 className="text-base font-black text-slate-900 font-sans">{source.name}</h3>
                     <a
                       href={source.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs font-mono text-indigo-600 hover:underline flex items-center gap-1 mt-0.5 truncate max-w-sm"
+                      className="text-xs font-mono font-bold text-sky-600 hover:underline flex items-center gap-1 mt-0.5 truncate max-w-sm"
                     >
                       <span className="truncate">{source.url}</span>
-                      <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                      <ExternalLink className="w-3.5 h-3.5 flex-shrink-0" />
                     </a>
                   </div>
                 </div>
 
                 <button
                   onClick={() => handleToggleStatus(source.id)}
-                  className={`px-3 py-1 rounded-full font-mono text-xs font-bold border cursor-pointer ${
+                  className={`px-3 py-1 rounded-full font-sans text-xs font-extrabold border-2 cursor-pointer ${
                     source.status === 'ACTIVE'
-                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                      : 'bg-slate-100 text-slate-600 border-slate-200'
+                      ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                      : 'bg-slate-100 text-slate-700 border-slate-300'
                   }`}
                 >
                   {source.status === 'ACTIVE' ? '● ACTIF' : '○ INACTIF'}
@@ -324,24 +316,24 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
               </div>
 
               {/* Specs */}
-              <div className="grid grid-cols-3 gap-2 text-xs font-mono">
-                <div className="bg-slate-50 p-2 rounded-xl border border-slate-200">
-                  <span className="text-slate-500 block text-[9px] uppercase">Format</span>
-                  <span className="text-slate-900 font-bold">{source.type}</span>
+              <div className="grid grid-cols-3 gap-2 text-xs font-sans">
+                <div className="bg-sky-50 p-2.5 rounded-2xl border-2 border-sky-100">
+                  <span className="text-sky-700 block text-[10px] font-mono uppercase font-bold">Format</span>
+                  <span className="text-slate-900 font-extrabold">{source.type}</span>
                 </div>
-                <div className="bg-slate-50 p-2 rounded-xl border border-slate-200">
-                  <span className="text-slate-500 block text-[9px] uppercase">Fréquence</span>
-                  <span className="text-indigo-700 font-bold">{source.frequency}</span>
+                <div className="bg-sky-50 p-2.5 rounded-2xl border-2 border-sky-100">
+                  <span className="text-sky-700 block text-[10px] font-mono uppercase font-bold">Fréquence</span>
+                  <span className="text-indigo-700 font-extrabold">{source.frequency}</span>
                 </div>
-                <div className="bg-slate-50 p-2 rounded-xl border border-slate-200">
-                  <span className="text-slate-500 block text-[9px] uppercase">Prochain Scrape</span>
-                  <span className="text-emerald-700 font-bold truncate block">{nextScrapeStr}</span>
+                <div className="bg-sky-50 p-2.5 rounded-2xl border-2 border-sky-100">
+                  <span className="text-sky-700 block text-[10px] font-mono uppercase font-bold">Prochain Scrape</span>
+                  <span className="text-emerald-700 font-extrabold truncate block">{nextScrapeStr}</span>
                 </div>
               </div>
 
               {/* Actions */}
-              <div className="flex items-center justify-between pt-2 border-t border-slate-100">
-                <span className="text-xs font-mono text-slate-400">
+              <div className="flex items-center justify-between pt-2 border-t-2 border-sky-100">
+                <span className="text-xs font-mono font-bold text-sky-700">
                   Dernier : {source.lastScraped ? new Date(source.lastScraped).toLocaleTimeString() : 'N/A'}
                 </span>
 
@@ -349,17 +341,17 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
                   <button
                     onClick={() => handleRunSingleTest(source)}
                     disabled={isTesting}
-                    className="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-sans font-bold flex items-center gap-1 cursor-pointer transition-all disabled:opacity-50"
+                    className="pixar-btn-3d px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white text-xs font-sans font-extrabold flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                   >
-                    <Play className={`w-3.5 h-3.5 ${isTesting ? 'animate-spin' : ''}`} />
-                    <span>{isTesting ? 'Scraping...' : 'Tester'}</span>
+                    <Play className={`w-4 h-4 ${isTesting ? 'animate-spin' : ''}`} />
+                    <span>{isTesting ? 'Scraping...' : 'Tester 🚀'}</span>
                   </button>
 
                   <button
                     onClick={() => handleDeleteSource(source.id)}
-                    className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-sans font-bold cursor-pointer transition-all"
+                    className="px-3.5 py-2 rounded-2xl bg-rose-100 hover:bg-rose-200 text-rose-800 border-2 border-rose-300 text-xs font-sans font-bold cursor-pointer transition-all"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>

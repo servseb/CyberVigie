@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Globe, Clock, Calendar, ExternalLink, Eye, AlertOctagon, Building2, HardDrive, Flame } from 'lucide-react';
+import { Shield, Globe, Clock, Calendar, ExternalLink, Eye, Building2, HardDrive, Sparkles, Star } from 'lucide-react';
 
 export default function VictimCard({ victim, index, onSelectVictim }) {
   // Format relative time
@@ -38,78 +38,78 @@ export default function VictimCard({ victim, index, onSelectVictim }) {
   const volume = victim.data_volume || '850 GB';
 
   return (
-    <div className="cyber-card group flex flex-col justify-between overflow-hidden bg-white rounded-2xl transition-all duration-300 border border-slate-200 hover:border-indigo-400 shadow-sm hover:shadow-md">
+    <div className="pixar-card group flex flex-col justify-between overflow-hidden bg-white p-5 space-y-4">
       
-      {/* Top Header Sector Badge & Gravity */}
-      <div className="p-3.5 pb-2.5 border-b border-slate-100 flex items-center justify-between gap-2 bg-slate-50/70">
-        <span className="text-[11px] font-sans font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 truncate max-w-[170px]">
-          <Building2 className="w-3 h-3 text-indigo-600 shrink-0" />
+      {/* Top Sector & Star Score Header */}
+      <div className="flex items-center justify-between gap-2 border-b-2 border-sky-100 pb-3">
+        <span className="text-xs font-sans font-bold text-sky-900 bg-sky-100 border-2 border-sky-200 px-3 py-1 rounded-2xl flex items-center gap-1.5 truncate max-w-[170px] shadow-sm">
+          <Building2 className="w-3.5 h-3.5 text-sky-600 shrink-0" />
           {sectorName}
         </span>
 
-        <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${
+        <span className={`text-xs font-sans font-extrabold px-3 py-1 rounded-2xl border-2 flex items-center gap-1 shadow-sm ${
           isCritique
-            ? 'text-rose-700 bg-rose-50 border-rose-200'
-            : 'text-amber-700 bg-amber-50 border-amber-200'
+            ? 'text-rose-700 bg-rose-100 border-rose-300'
+            : 'text-amber-700 bg-amber-100 border-amber-300'
         }`}>
+          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
           {score} / 10
         </span>
       </div>
 
-      {/* Card Content */}
-      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+      {/* Main Body */}
+      <div className="space-y-3">
         <div>
-          {/* Prominent Company Name */}
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 font-mono mb-0.5 uppercase tracking-wider">
-            <span>SOCIÉTÉ IMPACTÉE :</span>
-          </div>
-          <h3 className="text-base font-extrabold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-1 font-sans">
+          <span className="text-[10px] font-mono text-sky-600 font-extrabold tracking-wider uppercase block">
+            🏢 SOCIÉTÉ IMPACTÉE :
+          </span>
+          <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-sky-600 transition-colors line-clamp-1 font-sans">
             {companyName}
           </h3>
-          <p className="text-xs font-mono text-slate-500 truncate mt-0.5">{victim.website}</p>
+          <p className="text-xs font-mono text-slate-400 truncate mt-0.5">{victim.website}</p>
         </div>
 
-        {/* Tactical Key Metadata Grid */}
-        <div className="grid grid-cols-2 gap-2 text-xs font-mono text-slate-700 bg-slate-50/80 p-2.5 rounded-xl border border-slate-200/80">
+        {/* Pixar Toy Stats Grid */}
+        <div className="grid grid-cols-2 gap-2 text-xs font-sans text-slate-800 bg-sky-50/90 p-3 rounded-2xl border-2 border-sky-100 shadow-inner">
           <div>
-            <span className="text-[9px] text-slate-500 uppercase flex items-center gap-1">
-              <Shield className="w-2.5 h-2.5 text-indigo-600" /> Groupe
+            <span className="text-[10px] font-mono text-sky-700 font-bold uppercase flex items-center gap-1">
+              🏴‍☠️ Groupe Attaquant
             </span>
-            <span className="font-bold text-indigo-900 truncate text-[11px] block mt-0.5">
+            <span className="font-extrabold text-indigo-900 truncate text-xs block mt-0.5">
               {victim.group_name}
             </span>
           </div>
 
           <div>
-            <span className="text-[9px] text-slate-500 uppercase flex items-center gap-1">
-              <Globe className="w-2.5 h-2.5 text-sky-600" /> Pays
+            <span className="text-[10px] font-mono text-sky-700 font-bold uppercase flex items-center gap-1">
+              🌍 Pays Cible
             </span>
-            <span className="font-bold text-slate-900 truncate text-[11px] block mt-0.5">
+            <span className="font-extrabold text-slate-900 truncate text-xs block mt-0.5">
               {victim.country}
             </span>
           </div>
 
           <div className="mt-1">
-            <span className="text-[9px] text-slate-500 uppercase flex items-center gap-1">
-              <HardDrive className="w-2.5 h-2.5 text-emerald-600" /> Vol. Volé
+            <span className="text-[10px] font-mono text-sky-700 font-bold uppercase flex items-center gap-1">
+              🎈 Vol. Volé
             </span>
-            <span className="text-[11px] text-emerald-700 font-bold block mt-0.5">
+            <span className="text-xs text-rose-600 font-extrabold block mt-0.5">
               {volume}
             </span>
           </div>
 
           <div className="mt-1">
-            <span className="text-[9px] text-slate-500 uppercase flex items-center gap-1">
-              <Calendar className="w-2.5 h-2.5 text-amber-600" /> Date Fuite
+            <span className="text-[10px] font-mono text-sky-700 font-bold uppercase flex items-center gap-1">
+              📅 Date Récence
             </span>
-            <span className="text-[11px] text-slate-900 font-semibold block mt-0.5">
+            <span className="text-xs text-emerald-700 font-extrabold block mt-0.5">
               {formatDate(victim.attack_date)} ({getRelativeTime(victim.attack_date)})
             </span>
           </div>
         </div>
 
-        {/* Proof / Screenshot Preview */}
-        <div className="relative w-full h-28 bg-slate-100 rounded-xl border border-slate-200 overflow-hidden flex items-center justify-center group/img">
+        {/* Screenshot Proof */}
+        <div className="relative w-full h-32 bg-sky-100 rounded-2xl border-2 border-sky-200 overflow-hidden flex items-center justify-center group/img shadow-sm">
           {victim.screenshot ? (
             <img
               src={victim.screenshot}
@@ -123,36 +123,36 @@ export default function VictimCard({ victim, index, onSelectVictim }) {
             />
           ) : null}
           <div
-            className={`w-full h-full flex flex-col items-center justify-center p-3 text-center bg-slate-50 text-slate-500 ${
+            className={`w-full h-full flex flex-col items-center justify-center p-3 text-center bg-sky-50 text-slate-600 ${
               victim.screenshot ? 'hidden' : 'flex'
             }`}
           >
-            <Shield className="w-6 h-6 text-slate-400 mb-1" />
-            <span className="text-xs font-sans text-slate-600 line-clamp-2">
-              {victim.description || `Preuves d exfiltration de la société ${companyName} publiées sur le réseau Tor.`}
+            <Shield className="w-7 h-7 text-sky-400 mb-1" />
+            <span className="text-xs font-sans font-semibold text-sky-900 line-clamp-2">
+              {victim.description || `Preuves d exfiltration de la société ${companyName} disponibles.`}
             </span>
           </div>
         </div>
+      </div>
 
-        {/* Card Footer Actions */}
-        <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
-          <button
-            onClick={() => onSelectVictim(victim)}
-            className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-sans font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-all shadow-sm cursor-pointer"
-          >
-            <Eye className="w-3.5 h-3.5 text-white" />
-            <span>Voir le Dossier</span>
-          </button>
+      {/* Card 3D Buttons */}
+      <div className="flex items-center gap-2 pt-2 border-t-2 border-sky-100">
+        <button
+          onClick={() => onSelectVictim(victim)}
+          className="pixar-btn-3d flex-1 inline-flex items-center justify-center gap-2 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-extrabold font-sans text-xs cursor-pointer shadow-md"
+        >
+          <Eye className="w-4 h-4 text-white" />
+          <span>Inspecter 🚀</span>
+        </button>
 
-          <a
-            href={victim.claim_url !== '#' ? victim.claim_url : `https://ransomware.live/#/group/${encodeURIComponent(victim.group_name)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-2 rounded-xl text-xs font-mono text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all cursor-pointer flex items-center justify-center"
-          >
-            <ExternalLink className="w-3.5 h-3.5 text-slate-600" />
-          </a>
-        </div>
+        <a
+          href={victim.claim_url !== '#' ? victim.claim_url : `https://ransomware.live/#/group/${encodeURIComponent(victim.group_name)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-3.5 py-2.5 rounded-2xl text-xs font-mono font-bold text-sky-800 bg-sky-100 hover:bg-sky-200 border-2 border-sky-200 transition-all cursor-pointer flex items-center justify-center"
+        >
+          <ExternalLink className="w-4 h-4 text-sky-700" />
+        </a>
       </div>
     </div>
   );
