@@ -87,7 +87,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#080c14] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="min-h-screen flex flex-col bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
       {/* Top Header */}
       <Header
         onOpenEmailModal={() => setIsEmailModalOpen(true)}
@@ -103,7 +103,7 @@ export default function App() {
       />
 
       {/* Main Container View */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6">
         {activeTab === 'victims' && (
           <VictimsTracker
             victims={victims}
@@ -144,16 +144,16 @@ export default function App() {
       </main>
 
       {/* Modern Cyber Footer */}
-      <footer className="border-t border-slate-800/80 bg-[#060910] py-6 px-4 lg:px-8 text-center text-xs font-mono text-slate-500">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <footer className="border-t border-white/[0.06] bg-[#05070a] py-5 px-4 lg:px-8 text-center text-xs font-mono text-slate-500">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
-            <span>CYBERVIGIE — Vigilance Cyber & Traçabilité des Menaces v2.4</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+            <span>CYBERVIGIE — Vigilance Cyber & Traçabilité v2.4</span>
           </div>
           <div>
-            Données intégrées de <a href="https://ransomware.live" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">ransomware.live</a> & CERT-FR
+            Données de <a href="https://ransomware.live" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">ransomware.live</a> & CERT-FR
           </div>
-          <div>© {new Date().getFullYear()} CYBERVIGIE — Plateforme de Vigilance Cyber</div>
+          <div>© {new Date().getFullYear()} CYBERVIGIE</div>
         </div>
       </footer>
 

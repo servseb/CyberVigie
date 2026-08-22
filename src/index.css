@@ -1,73 +1,116 @@
 @import "tailwindcss";
 
 :root {
-  --bg-dark: #080c14;
-  --card-bg: rgba(13, 18, 32, 0.85);
-  --card-border: rgba(255, 255, 255, 0.08);
+  --bg-dark: #07090e;
+  --card-bg: rgba(13, 17, 26, 0.75);
+  --card-border: rgba(255, 255, 255, 0.07);
+  --card-border-hover: rgba(0, 242, 254, 0.25);
   --cyan-glow: #00f2fe;
-  --purple-glow: #9d4edd;
+  --purple-glow: #8b5cf6;
   --emerald-glow: #10b981;
 }
 
 body {
-  background-color: #080c14;
+  background-color: #07090e;
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(157, 78, 221, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.06) 0%, transparent 50%),
-    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    radial-gradient(circle at 50% -10%, rgba(56, 189, 248, 0.07) 0%, transparent 50%),
+    radial-gradient(circle at 90% 40%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
   background-position: 0 0, 0 0, -1px -1px, -1px -1px;
   color: #f1f5f9;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 code, kbd, pre, .font-mono {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Glassmorphism Cards */
+/* Glassmorphism Cards & Containers */
 .cyber-card {
   background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--card-border);
-  border-radius: 0.75rem;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0.875rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cyber-card:hover {
-  border-color: rgba(0, 242, 254, 0.3);
-  box-shadow: 0 8px 30px rgba(0, 242, 254, 0.08);
+  border-color: var(--card-border-hover);
+  box-shadow: 0 10px 35px -10px rgba(0, 242, 254, 0.07), 0 0 1px 1px rgba(0, 242, 254, 0.1);
+  transform: translateY(-1px);
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Text Gradients */
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #ffffff 20%, #00f2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-white {
+  background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glow Accent Utilities */
+.glow-cyan {
+  box-shadow: 0 0 20px -3px rgba(0, 242, 254, 0.25);
+}
+
+.glow-red {
+  box-shadow: 0 0 20px -3px rgba(239, 68, 68, 0.25);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px -3px rgba(139, 92, 246, 0.25);
+}
+
+/* Custom Fine Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #07090e;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-/* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-/* Custom Scrollbars */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Entry Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-::-webkit-scrollbar-track {
-  background: #080c14;
-}
-::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Line clamp utilities */

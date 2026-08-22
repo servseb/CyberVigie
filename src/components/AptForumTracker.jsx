@@ -14,62 +14,62 @@ export default function AptForumTracker({ forums }) {
       !query ||
       item.name.toLowerCase().includes(query) ||
       item.url.toLowerCase().includes(query) ||
-      item.description.toLowerCase().includes(query);
+      item.description?.toLowerCase().includes(query);
     return matchesStatus && matchesSearch;
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Header Banner */}
-      <div className="cyber-card p-6 border border-indigo-500/30 bg-gradient-to-r from-indigo-950/30 via-slate-900 to-slate-950 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="cyber-card p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Radio className="w-5 h-5 text-indigo-400 animate-pulse" />
-            <h2 className="text-xl font-black tracking-wider text-white font-mono uppercase">
-              SITES & FORUMS APT
+            <Radio className="w-4 h-4 text-indigo-400" />
+            <h2 className="text-base font-bold text-white font-mono uppercase tracking-wide">
+              MONITORING DE SITES & FORUMS APT
             </h2>
           </div>
           <p className="text-xs text-slate-400">
-            Référentiel Fastfire · vérification manuelle recommandée avant toute consultation
+            Vigilance permanente des serveurs et portails d'exfiltration d'acteurs étatiques & cybercriminels.
           </p>
         </div>
 
-        {/* Header Stats */}
-        <div className="flex items-center gap-3">
-          <div className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-center">
-            <div className="text-xl font-bold font-mono text-white">683</div>
-            <div className="text-[10px] text-slate-400 font-mono">Références</div>
+        {/* Stats Pills */}
+        <div className="flex items-center gap-2">
+          <div className="px-3 py-1.5 bg-slate-950/60 border border-white/[0.06] rounded-lg text-center">
+            <div className="text-sm font-bold font-mono text-white">683</div>
+            <div className="text-[9px] text-slate-500 font-mono uppercase">Référencés</div>
           </div>
-          <div className="px-4 py-2 bg-emerald-950/40 border border-emerald-800/40 rounded-xl text-center">
-            <div className="text-xl font-bold font-mono text-emerald-400">459</div>
-            <div className="text-[10px] text-emerald-300/80 font-mono">Actifs</div>
+          <div className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-center">
+            <div className="text-sm font-bold font-mono text-emerald-400">459</div>
+            <div className="text-[9px] text-emerald-300/70 font-mono uppercase">En Ligne</div>
           </div>
-          <div className="px-4 py-2 bg-red-950/40 border border-red-800/40 rounded-xl text-center">
-            <div className="text-xl font-bold font-mono text-red-400">213</div>
-            <div className="text-[10px] text-red-300/80 font-mono">Inactifs</div>
+          <div className="px-3 py-1.5 bg-rose-500/10 border border-rose-500/20 rounded-lg text-center">
+            <div className="text-sm font-bold font-mono text-rose-400">213</div>
+            <div className="text-[9px] text-rose-300/70 font-mono uppercase">Hors Ligne</div>
           </div>
         </div>
       </div>
 
       {/* Filter Bar */}
-      <div className="cyber-card p-4 border border-slate-800 flex flex-col sm:flex-row items-center gap-3">
+      <div className="cyber-card p-3 flex flex-col sm:flex-row items-center gap-3">
         <div className="relative flex-1 w-full">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Rechercher un groupe, un nom ou une URL..."
-            className="w-full pl-10 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all"
+            placeholder="Rechercher un groupe, un nom ou une adresse URL..."
+            className="w-full pl-9 pr-3 py-1.5 bg-slate-950/80 border border-white/[0.08] rounded-lg text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all"
           />
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          <Filter className="w-4 h-4 text-slate-400" />
+          <Filter className="w-3.5 h-3.5 text-slate-400" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full sm:w-auto px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-slate-300 focus:outline-none focus:border-indigo-500 cursor-pointer"
+            className="w-full sm:w-auto px-3 py-1.5 bg-slate-950/80 border border-white/[0.08] rounded-lg text-xs font-mono text-slate-300 focus:outline-none focus:border-indigo-500 cursor-pointer"
           >
             <option value="ALL">Tous les statuts</option>
             <option value="ONLINE">En ligne (ONLINE)</option>
@@ -78,55 +78,49 @@ export default function AptForumTracker({ forums }) {
         </div>
       </div>
 
-      {/* Forum Links List */}
-      <div className="space-y-3">
+      {/* Forum Links Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {filtered.map((item) => {
           const isOnline = item.status === 'ONLINE';
           return (
             <div
               key={item.id}
-              className="cyber-card p-4 border border-slate-800/90 bg-[#0c101c]/90 hover:bg-[#101526] flex items-center justify-between gap-4 transition-all duration-200"
+              className="cyber-card p-4 flex items-center justify-between gap-3 hover:border-indigo-500/30 transition-all"
             >
-              <div className="flex items-center gap-3.5 flex-1 min-w-0">
+              <div className="flex items-center gap-3 flex-1 min-w-0">
                 <div
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center border ${
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center border shrink-0 ${
                     isOnline
-                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                      : 'bg-red-500/10 border-red-500/30 text-red-400'
+                      ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                      : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
                   }`}
                 >
                   {isOnline ? (
-                    <ShieldCheck className="w-5 h-5" />
+                    <ShieldCheck className="w-4 h-4" />
                   ) : (
-                    <ShieldAlert className="w-5 h-5" />
+                    <ShieldAlert className="w-4 h-4" />
                   )}
                 </div>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-bold text-white font-mono truncate">{item.name}</h4>
+                    <h4 className="text-xs font-bold text-slate-100 font-mono truncate">{item.name}</h4>
                     {item.is_onion && (
-                      <span className="text-[10px] font-mono text-amber-300 bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 rounded">
+                      <span className="text-[9px] font-mono text-amber-300 bg-amber-500/15 border border-amber-500/30 px-1.5 py-0.2 rounded">
                         .onion
                       </span>
                     )}
                   </div>
-                  <p className="text-xs font-mono text-slate-400 truncate">{item.url}</p>
-                  {item.description && (
-                    <p className="text-[11px] text-slate-500 font-sans mt-0.5 line-clamp-1">
-                      {item.description}
-                    </p>
-                  )}
+                  <p className="text-[11px] font-mono text-slate-500 truncate mt-0.5">{item.url}</p>
                 </div>
               </div>
 
-              {/* Status Pill & External Link Action */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 shrink-0">
                 <span
-                  className={`text-[10px] font-mono font-bold px-3 py-1 rounded-lg border ${
+                  className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border ${
                     isOnline
-                      ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
-                      : 'bg-red-500/15 text-red-400 border-red-500/30'
+                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                      : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
                   }`}
                 >
                   {item.status}
@@ -136,9 +130,9 @@ export default function AptForumTracker({ forums }) {
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 hover:border-cyan-500/50 hover:bg-slate-800 text-slate-400 hover:text-cyan-400 flex items-center justify-center transition-all cursor-pointer"
+                  className="w-7 h-7 rounded-lg bg-slate-950 border border-white/[0.08] hover:border-indigo-500/50 hover:bg-slate-800 text-slate-400 hover:text-indigo-400 flex items-center justify-center transition-all cursor-pointer"
                 >
-                  <ExternalLink className="w-4 h-4" />
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>

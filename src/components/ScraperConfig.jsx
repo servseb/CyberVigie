@@ -4,12 +4,10 @@ import {
   Plus,
   Search,
   Filter,
-  RefreshCw,
   Download,
   Upload,
   Play,
   CheckCircle2,
-  XCircle,
   Clock,
   Globe,
   Radio,
@@ -19,8 +17,7 @@ import {
   Trash2,
   ShieldCheck,
   Terminal,
-  Database,
-  Layers
+  Database
 } from 'lucide-react';
 import ScraperModal from './ScraperModal';
 
@@ -87,8 +84,7 @@ export default function ScraperConfig({ sources, setSources }) {
         ...prev,
         [source.id]: [
           ...(prev[source.id] || []),
-          `[${new Date().toLocaleTimeString()}] HTTP 200 OK — Parsing des éléments avec les sélecteurs custom...`,
-          `[${new Date().toLocaleTimeString()}] Conteneur: ${source.cssSelectors?.container || 'default'}`
+          `[${new Date().toLocaleTimeString()}] HTTP 200 OK — Parsing avec les sélecteurs custom...`
         ]
       }));
     }, 600);
@@ -98,17 +94,16 @@ export default function ScraperConfig({ sources, setSources }) {
         ...prev,
         [source.id]: [
           ...(prev[source.id] || []),
-          `[${new Date().toLocaleTimeString()}] SUCESS — Scraper opérationnel ! ${Math.floor(Math.random() * 25) + 5} nouveaux éléments extraits.`
+          `[${new Date().toLocaleTimeString()}] SUCCÈS — Scraper opérationnel ! Éléments synchronisés.`
         ]
       }));
       setRunningTestId(null);
-      // Update lastScraped date
       setSources((prev) =>
         prev.map((s) =>
           s.id === source.id ? { ...s, lastScraped: new Date().toISOString() } : s
         )
       );
-    }, 1500);
+    }, 1400);
   };
 
   // Export JSON configuration
@@ -158,22 +153,22 @@ export default function ScraperConfig({ sources, setSources }) {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Top Banner Notice Hors IA */}
-      <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950/40 border border-emerald-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      <div className="cyber-card p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-            <ShieldCheck className="w-6 h-6" />
+          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+            <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-white font-mono">
+              <h2 className="text-sm font-bold text-white font-mono">
                 Moteur de Scraping Direct & Autonome
               </h2>
-              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">
-                100% Hors-IA / Zero Third-Party AI
+              <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">
+                100% HORS-IA
               </span>
             </div>
             <p className="text-xs text-slate-400 font-sans mt-0.5">
-              Configuration locale des extracteurs web, flux RSS et endpoints API pour alimenter la Threat Intelligence sans recourir à des modèles génératifs.
+              Configuration locale des extracteurs web, flux RSS et endpoints API pour alimenter la Threat Intelligence sans recourir à des services externes.
             </p>
           </div>
         </div>
@@ -183,81 +178,80 @@ export default function ScraperConfig({ sources, setSources }) {
             setEditingSource(null);
             setIsModalOpen(true);
           }}
-          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-slate-950 font-bold font-mono text-xs flex items-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer whitespace-nowrap transition-all"
+          className="px-3.5 py-2 rounded-xl bg-cyan-500 text-slate-950 font-bold font-mono text-xs hover:bg-cyan-400 transition-all flex items-center gap-1.5 shadow-sm cursor-pointer whitespace-nowrap"
         >
-          <Plus className="w-4 h-4" />
-          <span>Implémenter un Nouveau Site Source</span>
+          <Plus className="w-3.5 h-3.5" />
+          <span>Ajouter une Source</span>
         </button>
       </div>
 
       {/* Overview Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-2xl bg-[#0d1220] border border-slate-800/80 flex items-center justify-between">
+        <div className="cyber-card p-4 flex items-center justify-between">
           <div>
-            <span className="text-[11px] font-mono text-slate-400 uppercase font-semibold">Total Sources</span>
-            <div className="text-2xl font-black text-white font-mono mt-1">{sources.length}</div>
-            <span className="text-[10px] font-mono text-cyan-400">Sites d'information & Flux</span>
+            <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">Total Sources</span>
+            <div className="text-2xl font-bold text-white font-mono mt-0.5">{sources.length}</div>
+            <span className="text-[10px] font-mono text-cyan-400">Flux & Portails</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-            <Globe className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+            <Globe className="w-4.5 h-4.5" />
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-[#0d1220] border border-slate-800/80 flex items-center justify-between">
+        <div className="cyber-card p-4 flex items-center justify-between">
           <div>
-            <span className="text-[11px] font-mono text-slate-400 uppercase font-semibold">Scrapers Actifs</span>
-            <div className="text-2xl font-black text-emerald-400 font-mono mt-1">{activeCount}</div>
-            <span className="text-[10px] font-mono text-slate-400">{inactiveCount} inactifs / pause</span>
+            <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">Scrapers Actifs</span>
+            <div className="text-2xl font-bold text-emerald-400 font-mono mt-0.5">{activeCount}</div>
+            <span className="text-[10px] font-mono text-slate-500">{inactiveCount} inactifs</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-            <CheckCircle2 className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <CheckCircle2 className="w-4.5 h-4.5" />
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-[#0d1220] border border-slate-800/80 flex items-center justify-between">
+        <div className="cyber-card p-4 flex items-center justify-between">
           <div>
-            <span className="text-[11px] font-mono text-slate-400 uppercase font-semibold">Fréquence Moyenne</span>
-            <div className="text-2xl font-black text-purple-400 font-mono mt-1">15 min</div>
-            <span className="text-[10px] font-mono text-slate-400">Synchronisation auto</span>
+            <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">Fréquence Moyen.</span>
+            <div className="text-2xl font-bold text-purple-400 font-mono mt-0.5">15 min</div>
+            <span className="text-[10px] font-mono text-slate-500">Intervalle auto</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-            <Clock className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+            <Clock className="w-4.5 h-4.5" />
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-[#0d1220] border border-slate-800/80 flex items-center justify-between">
+        <div className="cyber-card p-4 flex items-center justify-between">
           <div>
-            <span className="text-[11px] font-mono text-slate-400 uppercase font-semibold">Éléments Traités</span>
-            <div className="text-2xl font-black text-amber-400 font-mono mt-1">{totalScrapedItems.toLocaleString()}</div>
-            <span className="text-[10px] font-mono text-slate-400">Actes cyber répertoriés</span>
+            <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">Actes Répertoriés</span>
+            <div className="text-2xl font-bold text-amber-400 font-mono mt-0.5">{totalScrapedItems.toLocaleString()}</div>
+            <span className="text-[10px] font-mono text-slate-500">Données extraites</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-            <Database className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+            <Database className="w-4.5 h-4.5" />
           </div>
         </div>
       </div>
 
       {/* Toolbar Controls */}
-      <div className="p-4 rounded-2xl bg-[#0d1220] border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="cyber-card p-3 flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Search */}
-        <div className="relative w-full md:w-80">
+        <div className="relative w-full md:w-72">
           <input
             type="text"
-            placeholder="Rechercher par nom, URL ou protocole..."
+            placeholder="Rechercher par nom, URL..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+            className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-slate-950/80 border border-white/[0.08] text-xs font-mono text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
           />
-          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+          <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
         </div>
 
         {/* Filters & Actions */}
-        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
-          {/* Category Filter */}
+        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-500"
+            className="px-3 py-1.5 rounded-lg bg-slate-950/80 border border-white/[0.08] text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-500"
           >
             <option value="ALL">Toutes les Catégories</option>
             <option value="CERT / ANSSI">CERT / ANSSI</option>
@@ -268,36 +262,33 @@ export default function ScraperConfig({ sources, setSources }) {
             <option value="Actualités Cyber">Actualités Cyber</option>
           </select>
 
-          {/* Status Filter */}
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-500"
+            className="px-3 py-1.5 rounded-lg bg-slate-950/80 border border-white/[0.08] text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-500"
           >
             <option value="ALL">Tous les Statuts</option>
             <option value="ACTIVE">Actifs uniquement</option>
             <option value="INACTIVE">Inactifs uniquement</option>
           </select>
 
-          {/* Import JSON */}
-          <label className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-mono flex items-center gap-1.5 cursor-pointer transition-all">
+          <label className="px-3 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-300 border border-white/[0.08] text-xs font-mono flex items-center gap-1.5 cursor-pointer transition-all">
             <Upload className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Importer JSON</span>
+            <span>Import</span>
             <input type="file" accept=".json" onChange={handleImportJson} className="hidden" />
           </label>
 
-          {/* Export JSON */}
           <button
             onClick={handleExportJson}
-            className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-mono flex items-center gap-1.5 cursor-pointer transition-all"
+            className="px-3 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-300 border border-white/[0.08] text-xs font-mono flex items-center gap-1.5 cursor-pointer transition-all"
           >
             <Download className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Exporter JSON</span>
+            <span>Export</span>
           </button>
         </div>
       </div>
 
-      {/* Sources Grid / List */}
+      {/* Sources Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {filteredSources.map((source) => {
           const isTesting = runningTestId === source.id;
@@ -306,10 +297,10 @@ export default function ScraperConfig({ sources, setSources }) {
           return (
             <div
               key={source.id}
-              className={`p-5 rounded-2xl bg-[#0d1220] border transition-all ${
+              className={`cyber-card p-4 transition-all ${
                 source.status === 'ACTIVE'
-                  ? 'border-slate-800 hover:border-cyan-500/50 shadow-lg shadow-black/20'
-                  : 'border-slate-800/60 opacity-75'
+                  ? 'hover:border-cyan-500/30'
+                  : 'opacity-70'
               }`}
             >
               {/* Card Header */}
@@ -317,19 +308,19 @@ export default function ScraperConfig({ sources, setSources }) {
                 <div className="flex items-start gap-3">
                   <div className="mt-0.5">
                     {source.type.includes('RSS') ? (
-                      <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
                         <Rss className="w-4 h-4" />
                       </div>
                     ) : source.type.includes('API') ? (
-                      <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                      <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
                         <Cpu className="w-4 h-4" />
                       </div>
                     ) : source.type.includes('Telegram') ? (
-                      <div className="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400">
+                      <div className="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
                         <Radio className="w-4 h-4" />
                       </div>
                     ) : (
-                      <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
+                      <div className="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
                         <Globe className="w-4 h-4" />
                       </div>
                     )}
@@ -337,22 +328,17 @@ export default function ScraperConfig({ sources, setSources }) {
 
                   <div>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-sm font-bold text-white font-sans">{source.name}</h3>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">
+                      <h3 className="text-xs font-bold text-white font-sans">{source.name}</h3>
+                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-slate-950 text-slate-400 border border-white/[0.06]">
                         {source.category}
                       </span>
-                      {source.isCustom && (
-                        <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20 font-bold">
-                          Custom
-                        </span>
-                      )}
                     </div>
 
                     <a
                       href={source.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs font-mono text-cyan-400 hover:underline flex items-center gap-1 mt-1 truncate max-w-md"
+                      className="text-[11px] font-mono text-cyan-400 hover:underline flex items-center gap-1 mt-0.5 truncate max-w-sm"
                     >
                       <span className="truncate">{source.url}</span>
                       <ExternalLink className="w-3 h-3 flex-shrink-0" />
@@ -360,13 +346,12 @@ export default function ScraperConfig({ sources, setSources }) {
                   </div>
                 </div>
 
-                {/* Status Toggle Badge */}
                 <button
                   onClick={() => handleToggleStatus(source.id)}
-                  className={`px-2.5 py-1 rounded-lg font-mono text-[10px] font-bold border transition-all cursor-pointer ${
+                  className={`px-2 py-0.5 rounded font-mono text-[9px] font-bold border transition-all cursor-pointer ${
                     source.status === 'ACTIVE'
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'
-                      : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20'
+                      : 'bg-slate-950 text-slate-400 border-white/[0.06] hover:text-white'
                   }`}
                 >
                   {source.status === 'ACTIVE' ? '● ACTIF' : '○ INACTIF'}
@@ -374,30 +359,30 @@ export default function ScraperConfig({ sources, setSources }) {
               </div>
 
               {/* Scraper Details Grid */}
-              <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-slate-800/80 text-[11px] font-mono">
-                <div className="bg-slate-950/60 p-2 rounded-lg border border-slate-800">
-                  <span className="text-slate-500 block text-[9px] uppercase">Protocole</span>
+              <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-white/[0.05] text-[10px] font-mono">
+                <div className="bg-slate-950/60 p-1.5 rounded-md border border-white/[0.04]">
+                  <span className="text-slate-500 block text-[8px] uppercase">Format</span>
                   <span className="text-slate-200 font-semibold">{source.type}</span>
                 </div>
-                <div className="bg-slate-950/60 p-2 rounded-lg border border-slate-800">
-                  <span className="text-slate-500 block text-[9px] uppercase">Fréquence</span>
+                <div className="bg-slate-950/60 p-1.5 rounded-md border border-white/[0.04]">
+                  <span className="text-slate-500 block text-[8px] uppercase">Fréquence</span>
                   <span className="text-purple-300 font-semibold">{source.frequency}</span>
                 </div>
-                <div className="bg-slate-950/60 p-2 rounded-lg border border-slate-800">
-                  <span className="text-slate-500 block text-[9px] uppercase">Articles</span>
-                  <span className="text-amber-400 font-semibold">{source.itemCount || 0} items</span>
+                <div className="bg-slate-950/60 p-1.5 rounded-md border border-white/[0.04]">
+                  <span className="text-slate-500 block text-[8px] uppercase">Articles</span>
+                  <span className="text-amber-400 font-semibold">{source.itemCount || 0}</span>
                 </div>
               </div>
 
-              {/* Console Output during test */}
+              {/* Console Output */}
               {logs.length > 0 && (
-                <div className="mt-3 p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-[10px] space-y-1">
-                  <div className="flex items-center gap-1.5 text-cyan-400 font-bold mb-1">
+                <div className="mt-2.5 p-2.5 rounded-lg bg-slate-950 border border-white/[0.06] font-mono text-[10px] space-y-0.5">
+                  <div className="flex items-center gap-1 text-cyan-400 font-bold mb-0.5">
                     <Terminal className="w-3 h-3" />
-                    <span>Journal de simulation :</span>
+                    <span>Journal de test :</span>
                   </div>
                   {logs.map((log, i) => (
-                    <div key={i} className="text-slate-300 truncate">
+                    <div key={i} className="text-slate-300 truncate text-[9px]">
                       {log}
                     </div>
                   ))}
@@ -405,18 +390,18 @@ export default function ScraperConfig({ sources, setSources }) {
               )}
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-800/60">
-                <span className="text-[10px] font-mono text-slate-500">
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/[0.05]">
+                <span className="text-[9px] font-mono text-slate-500">
                   Dernier scrape : {source.lastScraped ? new Date(source.lastScraped).toLocaleTimeString() : 'N/A'}
                 </span>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => handleRunSingleTest(source)}
                     disabled={isTesting}
-                    className="px-3 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-mono flex items-center gap-1 cursor-pointer transition-all disabled:opacity-50"
+                    className="px-2.5 py-1 rounded-md bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/20 text-[11px] font-mono flex items-center gap-1 cursor-pointer transition-all disabled:opacity-50"
                   >
-                    <Play className={`w-3.5 h-3.5 ${isTesting ? 'animate-spin' : ''}`} />
+                    <Play className={`w-3 h-3 ${isTesting ? 'animate-spin' : ''}`} />
                     <span>{isTesting ? 'Scraping...' : 'Tester'}</span>
                   </button>
 
@@ -425,16 +410,16 @@ export default function ScraperConfig({ sources, setSources }) {
                       setEditingSource(source);
                       setIsModalOpen(true);
                     }}
-                    className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-mono cursor-pointer transition-all"
+                    className="px-2 py-1 rounded-md bg-slate-950 hover:bg-slate-800 text-slate-300 border border-white/[0.08] text-[11px] font-mono cursor-pointer transition-all"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 className="w-3 h-3" />
                   </button>
 
                   <button
                     onClick={() => handleDeleteSource(source.id)}
-                    className="px-2.5 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-mono cursor-pointer transition-all"
+                    className="px-2 py-1 rounded-md bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-[11px] font-mono cursor-pointer transition-all"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-3 h-3" />
                   </button>
                 </div>
               </div>
