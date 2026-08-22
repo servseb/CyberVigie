@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldAlert, Radio, Globe, Send, AlertTriangle, Cpu } from 'lucide-react';
+import { ShieldAlert, BookOpen, Globe, Send, AlertTriangle, Cpu, ShieldCheck } from 'lucide-react';
 
 export default function TabNavigation({ activeTab, setActiveTab, scraperCount = 7 }) {
   const tabs = [
@@ -10,10 +10,10 @@ export default function TabNavigation({ activeTab, setActiveTab, scraperCount = 
       count: 200,
     },
     {
-      id: 'apt-forums',
-      label: 'Forums APT 📡',
-      icon: Radio,
-      count: 683,
+      id: 'best-practices',
+      label: 'Bonnes Pratiques & Analyses 🛡️',
+      icon: ShieldCheck,
+      count: 9,
     },
     {
       id: 'underground',

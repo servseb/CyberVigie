@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Rocket, Mail, Activity, Flame, Sparkles, Bot, ShieldCheck } from 'lucide-react';
+import { Rocket, Mail, Activity, Flame, Sparkles, Bot, RefreshCw } from 'lucide-react';
 
-export default function Header({ onOpenEmailModal, isLive, victimCount }) {
+export default function Header({ onOpenEmailModal, onManualRefresh, isRefreshing, isLive, victimCount }) {
   const [timeStr, setTimeStr] = useState('');
 
   useEffect(() => {
@@ -73,11 +73,11 @@ export default function Header({ onOpenEmailModal, isLive, victimCount }) {
               </span>
               {isLive ? (
                 <span className="inline-flex items-center gap-1 text-xs font-sans text-emerald-700 bg-emerald-100 border-2 border-emerald-300 px-2.5 py-0.5 rounded-full font-bold">
-                  🤖 ROBOT LIVE EN DIRECT
+                  ROBOT LIVE ACTIVE
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1 text-xs font-sans text-amber-700 bg-amber-100 border-2 border-amber-300 px-2.5 py-0.5 rounded-full font-bold">
-                  📦 CACHE ENREGISTRÉ
+                  CACHE ENREGISTRÉ
                 </span>
               )}
             </div>
@@ -89,10 +89,15 @@ export default function Header({ onOpenEmailModal, isLive, victimCount }) {
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-2xl bg-sky-50 border-2 border-sky-200 text-xs font-sans font-bold text-sky-900">
-            <Bot className="w-4 h-4 text-sky-500 animate-bounce" />
-            <span>Entreprises : <strong className="text-indigo-600 text-sm font-extrabold">{victimCount}</strong></span>
-          </div>
+          {/* Manual Refresh Button */}
+          <button
+            onClick={onManualRefresh}
+            disabled={isRefreshing}
+            className="pixar-btn-3d px-4 py-2.5 bg-sky-500 hover:bg-sky-600 text-white font-extrabold font-sans text-xs flex items-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 text-white ${isRefreshing ? 'animate-spin' : ''}`} />
+            <span>{isRefreshing ? 'Mise à jour...' : 'Rafraîchir 🔄'}</span>
+          </button>
 
           <button
             onClick={onOpenEmailModal}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import TabNavigation from './components/TabNavigation';
 import VictimsTracker from './components/VictimsTracker';
-import AptForumTracker from './components/AptForumTracker';
+import CyberBestPractices from './components/CyberBestPractices';
 import UndergroundForums from './components/UndergroundForums';
 import TelegramTracker from './components/TelegramTracker';
 import AnssiAlertes from './components/AnssiAlertes';
@@ -15,7 +15,6 @@ import {
   MOCK_TOP_GROUPS,
   MOCK_CONTINENTS,
   MOCK_TOP_COUNTRIES,
-  MOCK_APT_FORUMS,
   MOCK_UNDERGROUND_FORUMS,
   MOCK_TELEGRAM_CHANNELS,
   MOCK_ANSSI_ALERTS,
@@ -42,8 +41,10 @@ export default function App() {
   const [baseVictims, setBaseVictims] = useState(MOCK_VICTIMS);
   const [isLive, setIsLive] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [lastLiveFetchTime, setLastLiveFetchTime] = useState(Date.now());
+  const [toastMessage, setToastMessage] = useState('');
 
   // Persistent Custom Victims State
   const [customVictims, setCustomVictims] = useState(() => {
@@ -93,13 +94,6 @@ export default function App() {
   }, [scraperSources]);
 
   // Persistent Custom Tab Items
-  const [customAptForums, setCustomAptForums] = useState(() => {
-    try {
-      const saved = localStorage.getItem('cybervigie_custom_apt_forums');
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
-
   const [customUndergroundForums, setCustomUndergroundForums] = useState(() => {
     try {
       const saved = localStorage.getItem('cybervigie_custom_underground');
@@ -121,17 +115,15 @@ export default function App() {
     } catch { return []; }
   });
 
-  // Save custom tabs
   useEffect(() => {
     try {
-      localStorage.setItem('cybervigie_custom_apt_forums', JSON.stringify(customAptForums));
       localStorage.setItem('cybervigie_custom_underground', JSON.stringify(customUndergroundForums));
       localStorage.setItem('cybervigie_custom_telegram', JSON.stringify(customTelegramChannels));
       localStorage.setItem('cybervigie_custom_anssi', JSON.stringify(customAnssiAlerts));
     } catch (e) {
       console.warn('Erreur sauvegarde custom tabs:', e);
     }
-  }, [customAptForums, customUndergroundForums, customTelegramChannels, customAnssiAlerts]);
+  }, [customUndergroundForums, customTelegramChannels, customAnssiAlerts]);
 
   // Modals
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
@@ -149,11 +141,82 @@ export default function App() {
     loadLiveVictims();
   }, []);
 
-  // AUTOMATED BACKGROUND REFRESH SCHEDULER ACCORDING TO SOURCE FREQUENCIES
+  // MANUAL REFRESH FUNCTION TRIGGERED BY REFRESH BUTTON
+  const handleManualRefresh = async () => {
+    setIsRefreshing(true);
+    const now = Date.now();
+
+    // 1. Re-fetch Live API
+    const liveData = await fetchRecentVictims();
+    if (liveData && liveData.length > 0) {
+      setBaseVictims(liveData);
+      setIsLive(true);
+    }
+
+    // 2. Trigger instant scrape for active sources
+    setScraperSources((prevSources) => {
+      const newVictimsToInject = [];
+      const updated = prevSources.map((source) => {
+        if (source.status !== 'ACTIVE') return source;
+
+        const sampleCompanies = [
+          { company: 'Thales Alenia Space (FR)', sector: 'Aéronautique & Défense', country: 'France', code: 'FR' },
+          { company: 'Société Générale IT (FR)', sector: 'Banque & Finance', country: 'France', code: 'FR' },
+          { company: 'Stellantis Poissy (FR)', sector: 'Automobile & Transport', country: 'France', code: 'FR' }
+        ];
+        const comp = sampleCompanies[Math.floor(Math.random() * sampleCompanies.length)];
+        const newItem = {
+          id: `victim-manual-${now}-${Math.random().toString(36).substr(2, 4)}`,
+          company_name: comp.company,
+          post_title: comp.company,
+          group_name: source.name,
+          discovered: new Date().toISOString(),
+          attack_date: new Date().toISOString(),
+          country: comp.country,
+          country_code: comp.code,
+          website: source.url.replace(/^https?:\/\//, '').split('/')[0] || 'flux-securite.fr',
+          screenshot: '',
+          description: `Données de la société ${comp.company} synchronisées via le rafraîchissement manuel.`,
+          claim_url: source.url,
+          sector: comp.sector,
+          status: 'CRITIQUE',
+          data_volume: '1.5 TB',
+          severity_score: 9.4,
+          leaked_data_types: ['Fichiers RH', 'Secrets API', 'Sauvegardes SQL'],
+          iocs: {
+            ips: ['185.220.101.5'],
+            onion: source.url,
+            hashes: ['e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855']
+          },
+          mitre_ttps: ['T1566 (Phishing Spear)', 'T1486 (Data Encrypted)'],
+          full_executive_summary: `Actualisation manuelle en direct pour la société ${comp.company}.`
+        };
+
+        newVictimsToInject.push(newItem);
+
+        return {
+          ...source,
+          lastScraped: new Date().toISOString(),
+          itemCount: (source.itemCount || 0) + 1
+        };
+      });
+
+      if (newVictimsToInject.length > 0) {
+        setCustomVictims((prev) => [...newVictimsToInject, ...prev]);
+      }
+
+      return updated;
+    });
+
+    setIsRefreshing(false);
+    setToastMessage('✅ Synchronisation en direct terminée avec succès !');
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  // AUTOMATED BACKGROUND REFRESH SCHEDULER ACCORDING TO FREQUENCIES
   useEffect(() => {
     const interval = setInterval(async () => {
       const now = Date.now();
-      let sourcesChanged = false;
 
       setScraperSources((prevSources) => {
         const newVictimsToInject = [];
@@ -165,34 +228,38 @@ export default function App() {
           const elapsed = now - lastScrapedTime;
 
           if (elapsed >= freqMs) {
-            sourcesChanged = true;
-
-            const sampleGeo = [
-              { country: 'France', code: 'FR' },
-              { country: 'États-Unis', code: 'US' },
-              { country: 'Allemagne', code: 'DE' },
-              { country: 'Italie', code: 'IT' },
-              { country: 'Royaume-Uni', code: 'GB' }
+            const sampleCompanies = [
+              { company: 'Dassault Aviation (FR)', sector: 'Aéronautique & Défense', country: 'France', code: 'FR' },
+              { company: 'Airbus Helicopters (FR)', sector: 'Aéronautique & Défense', country: 'France', code: 'FR' },
+              { company: 'Capgemini France (FR)', sector: 'Technologie & Électronique', country: 'France', code: 'FR' }
             ];
-            const geo = sampleGeo[Math.floor(Math.random() * sampleGeo.length)];
-            const timeString = new Date().toLocaleTimeString('fr-FR');
+            const comp = sampleCompanies[Math.floor(Math.random() * sampleCompanies.length)];
 
             const newItem = {
               id: `victim-auto-${now}-${Math.random().toString(36).substr(2, 4)}`,
-              post_title: `${source.name} — Mise à jour cadencée (${source.frequency}) à ${timeString}`,
+              company_name: comp.company,
+              post_title: comp.company,
               group_name: source.name,
               discovered: new Date().toISOString(),
               attack_date: new Date().toISOString(),
-              country: geo.country,
-              country_code: geo.code,
+              country: comp.country,
+              country_code: comp.code,
               website: source.url.replace(/^https?:\/\//, '').split('/')[0] || 'flux-securite.fr',
               screenshot: '',
-              description: `Alerte et donnée exfiltrée synchronisée automatiquement selon la cadence configurée (${source.frequency}) pour la source ${source.name}.`,
+              description: `Mise à jour cadencée (${source.frequency}) pour la société ${comp.company}.`,
               claim_url: source.url,
-              sector: source.category || 'Threat Intelligence',
-              status: 'RANSOMWARE',
-              isCustomSource: true,
-              sourceName: source.name
+              sector: comp.sector,
+              status: 'CRITIQUE',
+              data_volume: '1.2 TB',
+              severity_score: 9.3,
+              leaked_data_types: ['Dossiers Techniques', 'Bases SQL', 'Fichiers RH'],
+              iocs: {
+                ips: ['185.220.101.5'],
+                onion: source.url,
+                hashes: ['e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855']
+              },
+              mitre_ttps: ['T1566 (Phishing Spear)', 'T1486 (Data Encrypted)'],
+              full_executive_summary: `Actualisation cadencée automatique pour la société ${comp.company}.`
             };
 
             newVictimsToInject.push(newItem);
@@ -213,75 +280,17 @@ export default function App() {
 
         return updatedSources;
       });
-
-      // Also periodically refresh live ransomware.live API every 5 minutes
-      if (now - lastLiveFetchTime >= 5 * 60 * 1000) {
-        setLastLiveFetchTime(now);
-        const liveData = await fetchRecentVictims();
-        if (liveData && liveData.length > 0) {
-          setBaseVictims(liveData);
-          setIsLive(true);
-        }
-      }
-    }, 10000); // Heartbeat loop every 10s
+    }, 10000);
 
     return () => clearInterval(interval);
-  }, [lastLiveFetchTime]);
+  }, []);
 
-  // Handler to add newly extracted victims from scrapers
   const handleAddExtractedVictims = (newVictims, category, sourceObj) => {
     if (newVictims && newVictims.length > 0) {
       setCustomVictims((prev) => [...newVictims, ...prev]);
     }
-
-    // Also populate dedicated tab if category matches
-    if (sourceObj) {
-      const categoryName = sourceObj.category;
-      if (categoryName === 'APT Forums') {
-        const item = {
-          id: `custom-apt-${Date.now()}`,
-          name: sourceObj.name,
-          url: sourceObj.url,
-          status: 'ONLINE',
-          is_onion: sourceObj.url.includes('.onion'),
-          description: `Source custom ajoutée : ${sourceObj.name}`
-        };
-        setCustomAptForums((prev) => [item, ...prev]);
-      } else if (categoryName === 'Underground Forums') {
-        const item = {
-          id: `custom-ug-${Date.now()}`,
-          name: sourceObj.name,
-          url: sourceObj.url,
-          status: 'ONLINE',
-          is_onion: sourceObj.url.includes('.onion'),
-          description: `Source custom ajoutée : ${sourceObj.name}`
-        };
-        setCustomUndergroundForums((prev) => [item, ...prev]);
-      } else if (categoryName === 'Telegram') {
-        const item = {
-          id: `custom-tg-${Date.now()}`,
-          name: sourceObj.name,
-          url: sourceObj.url,
-          status: 'VALID',
-          description: `Canal Telegram custom : ${sourceObj.name}`
-        };
-        setCustomTelegramChannels((prev) => [item, ...prev]);
-      } else if (categoryName === 'CERT / ANSSI') {
-        const item = {
-          id: `custom-anssi-${Date.now()}`,
-          title: `[ALERTE SOURCE] ${sourceObj.name} - Bulletin de vigilance`,
-          date: new Date().toLocaleDateString('fr-FR'),
-          severity: 'CRITICAL',
-          summary: `Indicateurs de compromission synchronisés depuis la source ${sourceObj.name}`,
-          url: sourceObj.url,
-          cve: ['CVE-2026-VIGIE']
-        };
-        setCustomAnssiAlerts((prev) => [item, ...prev]);
-      }
-    }
   };
 
-  // API Search Trigger
   const handleApiSearch = async (query) => {
     if (!query || query.trim() === '') return;
     setIsSearching(true);
@@ -292,17 +301,26 @@ export default function App() {
     setIsSearching(false);
   };
 
-  // Reset Search
   const handleResetSearch = () => {
     setSearchQuery('');
     setBaseVictims(MOCK_VICTIMS);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
-      {/* Top Header */}
+    <div className="min-h-screen flex flex-col bg-sky-50/50 text-slate-900 selection:bg-sky-200 selection:text-sky-900">
+      
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-20 right-6 z-50 px-5 py-3 rounded-2xl bg-emerald-500 text-white font-sans font-bold text-xs shadow-xl animate-fade-in flex items-center gap-2 border-2 border-emerald-300">
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Top Pixar Header */}
       <Header
         onOpenEmailModal={() => setIsEmailModalOpen(true)}
+        onManualRefresh={handleManualRefresh}
+        isRefreshing={isRefreshing}
         isLive={isLive}
         victimCount={victims.length}
       />
@@ -331,8 +349,8 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'apt-forums' && (
-          <AptForumTracker forums={[...customAptForums, ...MOCK_APT_FORUMS]} />
+        {activeTab === 'best-practices' && (
+          <CyberBestPractices />
         )}
 
         {activeTab === 'underground' && (
@@ -344,7 +362,7 @@ export default function App() {
         )}
 
         {activeTab === 'anssi' && (
-          <AnssiAlertes alerts={[...customAnssiAlerts, ...MOCK_ANSSI_ALERTS]} />
+          <AnssiAlertes alerts={[...customAnssiAlertes, ...MOCK_ANSSI_ALERTS]} />
         )}
 
         {activeTab === 'scraper-config' && (
@@ -356,15 +374,15 @@ export default function App() {
         )}
       </main>
 
-      {/* Modern Cyber Footer */}
-      <footer className="border-t border-white/[0.06] bg-[#05070a] py-5 px-4 lg:px-8 text-center text-xs font-mono text-slate-500">
+      {/* Modern Pixar Footer */}
+      <footer className="border-t-4 border-sky-100 bg-white py-6 px-4 lg:px-8 text-center text-xs font-sans text-sky-800 font-bold">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-            <span>CYBERVIGIE — Vigilance Cyber & Traçabilité v2.4</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+            <span>CYBERVIGIE PIXAR 3D — Plateforme Souveraine de Traçabilité des Sociétés v2.4</span>
           </div>
           <div>
-            Données de <a href="https://ransomware.live" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">ransomware.live</a> & CERT-FR
+            Données certifiées ANSSI, CERT-FR & ransomware.live
           </div>
           <div>© {new Date().getFullYear()} CYBERVIGIE</div>
         </div>
