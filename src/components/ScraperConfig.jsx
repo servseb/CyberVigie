@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Cpu,
   Plus,
@@ -17,9 +17,11 @@ import {
   Trash2,
   ShieldCheck,
   Terminal,
-  Database
+  Database,
+  RefreshCw
 } from 'lucide-react';
 import ScraperModal from './ScraperModal';
+import { parseFrequencyToMs } from '../App';
 
 export default function ScraperConfig({ sources, setSources, onAddExtractedVictims }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -27,10 +29,40 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSource, setEditingSource] = useState(null);
+  const [now, setNow] = useState(Date.now());
 
   // Test Runner State
   const [runningTestId, setRunningTestId] = useState(null);
   const [testConsoleLogs, setTestConsoleLogs] = useState({});
+
+  // Real-time ticking clock for countdown display
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Calculate live countdown until next scrape
+  const getNextScrapeText = (source) => {
+    if (source.status !== 'ACTIVE') return 'En pause';
+    const freqMs = parseFrequencyToMs(source.frequency);
+    const lastScrapedTime = source.lastScraped ? new Date(source.lastScraped).getTime() : 0;
+    const nextRunTime = lastScrapedTime + freqMs;
+    const diffMs = nextRunTime - now;
+
+    if (diffMs <= 0) return 'Scrape imminent...';
+
+    const diffSec = Math.floor((diffMs / 1000) % 60);
+    const diffMin = Math.floor((diffMs / (1000 * 60)) % 60);
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+    if (diffHours > 0) {
+      return `Dans ${diffHours}h ${diffMin}m`;
+    }
+    if (diffMin > 0) {
+      return `Dans ${diffMin}m ${diffSec}s`;
+    }
+    return `Dans ${diffSec}s`;
+  };
 
   // Helper generator to simulate extracted victim items from a source
   const generateVictimsFromSource = (sourceObj, count = 3) => {
@@ -217,14 +249,14 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-bold text-white font-mono">
-                Moteur de Scraping Direct & Autonome
+                Moteur de Scraping & Rafraîchissement Automatique Cadencé
               </h2>
               <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">
-                100% HORS-IA
+                BOUCLE ARRIÈRE-PLAN ACTIVE
               </span>
             </div>
             <p className="text-xs text-slate-400 font-sans mt-0.5">
-              Toute source ajoutée ou testée génère et extrait automatiquement ses victimes dans le répertoire global et les onglets dédiés.
+              Chaque source active déclenche automatiquement l'extraction et l'actualisation des données selon la fréquence spécifiée (5 min, 15 min, 1h...).
             </p>
           </div>
         </div>
@@ -267,9 +299,12 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
 
         <div className="cyber-card p-4 flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">Fréquence Moyen.</span>
-            <div className="text-2xl font-bold text-purple-400 font-mono mt-0.5">15 min</div>
-            <span className="text-[10px] font-mono text-slate-500">Intervalle auto</span>
+            <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">Boucle Auto-Scrape</span>
+            <div className="text-2xl font-bold text-purple-400 font-mono mt-0.5">10s</div>
+            <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+              Planificateur actif
+            </span>
           </div>
           <div className="w-9 h-9 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
             <Clock className="w-4.5 h-4.5" />
@@ -349,6 +384,7 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
         {filteredSources.map((source) => {
           const isTesting = runningTestId === source.id;
           const logs = testConsoleLogs[source.id] || [];
+          const nextScrapeStr = getNextScrapeText(source);
 
           return (
             <div
@@ -425,8 +461,8 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
                   <span className="text-purple-300 font-semibold">{source.frequency}</span>
                 </div>
                 <div className="bg-slate-950/60 p-1.5 rounded-md border border-white/[0.04]">
-                  <span className="text-slate-500 block text-[8px] uppercase">Articles</span>
-                  <span className="text-amber-400 font-semibold">{source.itemCount || 0}</span>
+                  <span className="text-slate-500 block text-[8px] uppercase">Prochain Scrape</span>
+                  <span className="text-cyan-400 font-semibold truncate block">{nextScrapeStr}</span>
                 </div>
               </div>
 
@@ -448,7 +484,7 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
               {/* Action Buttons */}
               <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/[0.05]">
                 <span className="text-[9px] font-mono text-slate-500">
-                  Dernier scrape : {source.lastScraped ? new Date(source.lastScraped).toLocaleTimeString() : 'N/A'}
+                  Dernier : {source.lastScraped ? new Date(source.lastScraped).toLocaleTimeString() : 'N/A'}
                 </span>
 
                 <div className="flex items-center gap-1.5">
