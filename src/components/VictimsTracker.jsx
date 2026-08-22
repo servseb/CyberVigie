@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, Shield, Globe, Building2, Search, X, PieChart, BarChart3, Filter, RefreshCw, Layers } from 'lucide-react';
+import { Users, Shield, Globe, Building2, Search, X, PieChart, BarChart3, Filter, RefreshCw, Layers, Flame, HardDrive } from 'lucide-react';
 import WorldMap from './WorldMap';
 import VictimCard from './VictimCard';
 
@@ -63,68 +63,72 @@ export default function VictimsTracker({
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Metrics Summary Cards (4 KPIs) */}
+      
+      {/* Bento Grid Metrics Summary Cards (4 KPIs) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
         {/* Metric 1 */}
-        <div className="cyber-card p-4 flex items-center justify-between">
+        <div className="cyber-card cyber-hud-card p-4 flex items-center justify-between bg-gradient-to-br from-cyan-950/20 via-slate-900 to-slate-950">
           <div>
-            <span className="text-[10px] font-mono font-semibold tracking-widest text-slate-400 uppercase">
-              DERNIÈRES VICTIMES
+            <span className="text-[9px] font-mono font-bold tracking-widest text-cyan-400 uppercase">
+              ACTES ET FUITES TOTALES
             </span>
-            <div className="text-2xl font-bold font-mono text-white mt-0.5">200</div>
-            <span className="text-[11px] text-cyan-400">Les 200 derniers actes</span>
+            <div className="text-2xl font-black font-mono text-white mt-0.5">{victims.length}</div>
+            <span className="text-[11px] font-mono text-cyan-300">Base de données indexée</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shadow-sm">
+          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-md shadow-cyan-500/10">
             <Users className="w-5 h-5" />
           </div>
         </div>
 
         {/* Metric 2 */}
-        <div className="cyber-card p-4 flex items-center justify-between">
+        <div className="cyber-card cyber-hud-card p-4 flex items-center justify-between bg-gradient-to-br from-rose-950/20 via-slate-900 to-slate-950">
           <div>
-            <span className="text-[10px] font-mono font-semibold tracking-widest text-slate-400 uppercase">
-              GROUPES ACTIFS
+            <span className="text-[9px] font-mono font-bold tracking-widest text-rose-400 uppercase">
+              GROUPES ACTIFS IDENTIFIÉS
             </span>
-            <div className="text-2xl font-bold font-mono text-white mt-0.5">43</div>
-            <span className="text-[11px] text-rose-400">Groupes identifiés</span>
+            <div className="text-2xl font-black font-mono text-white mt-0.5">43</div>
+            <span className="text-[11px] font-mono text-rose-400 flex items-center gap-1">
+              <Flame className="w-3 h-3 text-rose-500 animate-pulse" /> Top : Qilin (19%)
+            </span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 shadow-sm">
+          <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 shadow-md shadow-rose-500/10">
             <Shield className="w-5 h-5" />
           </div>
         </div>
 
         {/* Metric 3 */}
-        <div className="cyber-card p-4 flex items-center justify-between">
+        <div className="cyber-card cyber-hud-card p-4 flex items-center justify-between bg-gradient-to-br from-emerald-950/20 via-slate-900 to-slate-950">
           <div>
-            <span className="text-[10px] font-mono font-semibold tracking-widest text-slate-400 uppercase">
-              PAYS TOUCHÉS
+            <span className="text-[9px] font-mono font-bold tracking-widest text-emerald-400 uppercase">
+              TERRITOIRES TOUCHÉS
             </span>
-            <div className="text-2xl font-bold font-mono text-white mt-0.5">45</div>
-            <span className="text-[11px] text-emerald-400">Territoires impactés</span>
+            <div className="text-2xl font-black font-mono text-white mt-0.5">45</div>
+            <span className="text-[11px] font-mono text-emerald-400">Périmètre mondial</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-sm">
+          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-md shadow-emerald-500/10">
             <Globe className="w-5 h-5" />
           </div>
         </div>
 
         {/* Metric 4 */}
-        <div className="cyber-card p-4 flex items-center justify-between">
+        <div className="cyber-card cyber-hud-card p-4 flex items-center justify-between bg-gradient-to-br from-amber-950/20 via-slate-900 to-slate-950">
           <div>
-            <span className="text-[10px] font-mono font-semibold tracking-widest text-slate-400 uppercase">
-              SECTEURS VISÉS
+            <span className="text-[9px] font-mono font-bold tracking-widest text-amber-400 uppercase">
+              VOLUME TOTAL EXFILTRÉ
             </span>
-            <div className="text-2xl font-bold font-mono text-white mt-0.5">12</div>
-            <span className="text-[11px] text-amber-400">Secteurs surveillés</span>
+            <div className="text-2xl font-black font-mono text-white mt-0.5">14.8 TB</div>
+            <span className="text-[11px] font-mono text-amber-400">Données confidentielles</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shadow-sm">
-            <Building2 className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-md shadow-amber-500/10">
+            <HardDrive className="w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Map & Top Countries Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* World Map SVG Container */}
+        {/* World Radar SVG Container */}
         <div className="lg:col-span-2">
           <WorldMap
             selectedCountry={selectedCountry}
@@ -134,10 +138,10 @@ export default function VictimsTracker({
         </div>
 
         {/* Top 10 Pays Touchés Card */}
-        <div className="cyber-card p-4 flex flex-col justify-between">
+        <div className="cyber-card cyber-hud-card p-4 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3 border-b border-white/[0.06] pb-2">
-              <h3 className="text-xs font-mono font-bold tracking-wider text-slate-200 uppercase flex items-center gap-1.5">
+              <h3 className="text-xs font-mono font-bold tracking-wider text-purple-400 uppercase flex items-center gap-1.5">
                 <BarChart3 className="w-4 h-4 text-purple-400" /> TOP 10 PAYS TOUCHÉS
               </h3>
               <span className="text-[10px] font-mono text-slate-500">Victimes</span>
@@ -151,7 +155,7 @@ export default function VictimsTracker({
                   className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${
                     selectedCountry === c.code
                       ? 'bg-purple-500/20 border border-purple-500/50 text-white font-bold'
-                      : 'bg-slate-950/40 border border-white/[0.04] text-slate-300 hover:bg-slate-800/60'
+                      : 'bg-slate-950/60 border border-white/[0.04] text-slate-300 hover:bg-slate-800/60'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -180,15 +184,15 @@ export default function VictimsTracker({
       {/* Analytics Section: Top 5 Groups & Continents Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top 5 Groupes d'Attaquants */}
-        <div className="cyber-card p-4">
+        <div className="cyber-card cyber-hud-card p-4">
           <div className="flex items-center justify-between mb-3 border-b border-white/[0.06] pb-2">
             <div>
-              <h3 className="text-xs font-mono font-bold tracking-wider text-slate-200 uppercase flex items-center gap-1.5">
+              <h3 className="text-xs font-mono font-bold tracking-wider text-cyan-400 uppercase flex items-center gap-1.5">
                 <Shield className="w-4 h-4 text-cyan-400" /> TOP 5 GROUPES D'ATTAQUANTS
               </h3>
-              <p className="text-[11px] text-slate-400">Groupes les plus actifs</p>
+              <p className="text-[11px] text-slate-400">Taux d'activité relatif</p>
             </div>
-            <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-md border border-cyan-500/20">
+            <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
               RANSOMWARE.LIVE
             </span>
           </div>
@@ -214,31 +218,31 @@ export default function VictimsTracker({
         </div>
 
         {/* Répartition par Continent */}
-        <div className="cyber-card p-4">
+        <div className="cyber-card cyber-hud-card p-4">
           <div className="flex items-center justify-between mb-3 border-b border-white/[0.06] pb-2">
             <div>
-              <h3 className="text-xs font-mono font-bold tracking-wider text-slate-200 uppercase flex items-center gap-1.5">
+              <h3 className="text-xs font-mono font-bold tracking-wider text-purple-400 uppercase flex items-center gap-1.5">
                 <PieChart className="w-4 h-4 text-purple-400" /> RÉPARTITION PAR CONTINENT
               </h3>
               <p className="text-[11px] text-slate-400">Part des victimes enregistrées</p>
             </div>
-            <span className="text-[10px] font-mono text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-md border border-purple-500/20">
+            <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">
               GLOBAL
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center pt-1">
-            {/* Donut Chart Simulator */}
+            {/* Donut Chart */}
             <div className="relative w-32 h-32 mx-auto flex items-center justify-center">
               <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
                 <circle cx="50" cy="50" r="38" stroke="#1e293b" strokeWidth="14" fill="transparent" />
                 <circle cx="50" cy="50" r="38" stroke="#3b82f6" strokeWidth="14" strokeDasharray="83 155" strokeDashoffset="0" fill="transparent" />
-                <circle cx="50" cy="50" r="38" stroke="#ef4444" strokeWidth="14" strokeDasharray="69 169" strokeDashoffset="-83" fill="transparent" />
+                <circle cx="50" cy="50" r="38" stroke="#ff2a5f" strokeWidth="14" strokeDasharray="69 169" strokeDashoffset="-83" fill="transparent" />
                 <circle cx="50" cy="50" r="38" stroke="#10b981" strokeWidth="14" strokeDasharray="33 205" strokeDashoffset="-152" fill="transparent" />
                 <circle cx="50" cy="50" r="38" stroke="#f97316" strokeWidth="14" strokeDasharray="13 225" strokeDashoffset="-185" fill="transparent" />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <span className="text-lg font-bold font-mono text-white">200</span>
+                <span className="text-lg font-bold font-mono text-white">{victims.length}</span>
                 <span className="text-[8px] text-slate-400 uppercase font-mono">Victimes</span>
               </div>
             </div>
@@ -260,14 +264,14 @@ export default function VictimsTracker({
       </div>
 
       {/* Directory Search & Victim List Header */}
-      <div className="cyber-card p-5 space-y-4">
+      <div className="cyber-card cyber-hud-card p-5 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3">
           <div>
-            <h2 className="text-base font-bold text-white font-sans flex items-center gap-2">
+            <h2 className="text-base font-bold text-white font-mono flex items-center gap-2 uppercase">
               <Layers className="w-4 h-4 text-cyan-400" />
-              Répertoire des Victimes
+              DOSSIERS & ACTES CYBER RÉPERTORIÉS
             </h2>
-            <p className="text-xs text-slate-400">Suivi en direct des fuites et cyberattaques</p>
+            <p className="text-xs text-slate-400 font-mono">Cliquer sur "Dossier" pour ouvrir le rapport d'investigation et consulter les IOCs</p>
           </div>
 
           <div className="text-xs font-mono text-slate-400">
@@ -298,7 +302,7 @@ export default function VictimsTracker({
               )}
             </div>
 
-            {/* Quick Live API Search Button / Trigger */}
+            {/* Quick Live API Search Button */}
             <div className="md:col-span-4 flex items-center gap-2">
               <input
                 type="text"
@@ -311,7 +315,7 @@ export default function VictimsTracker({
               <button
                 onClick={() => onApiSearch(searchQuery)}
                 disabled={isSearching}
-                className="px-3.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500 hover:text-slate-950 font-bold font-mono text-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer whitespace-nowrap"
+                className="px-3.5 py-2 rounded-xl bg-cyan-400 text-slate-950 font-bold font-mono text-xs hover:bg-cyan-300 transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer whitespace-nowrap"
               >
                 {isSearching ? (
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -334,7 +338,7 @@ export default function VictimsTracker({
                 onClick={() => setSelectedCountry(cf.code)}
                 className={`px-2.5 py-1 rounded-md text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer ${
                   selectedCountry === cf.code
-                    ? 'bg-cyan-500 text-slate-950 font-bold shadow-sm'
+                    ? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
                     : 'bg-slate-950/60 border border-white/[0.06] text-slate-400 hover:text-white hover:bg-slate-800'
                 }`}
               >
@@ -359,9 +363,9 @@ export default function VictimsTracker({
         ) : (
           <div className="py-12 text-center bg-slate-950/50 rounded-xl border border-white/[0.06]">
             <Shield className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-            <h4 className="text-xs font-bold text-slate-300 font-mono">Aucune victime ne correspond aux filtres</h4>
+            <h4 className="text-xs font-bold text-slate-300 font-mono">Aucun dossier ne correspond à la recherche</h4>
             <p className="text-[11px] text-slate-500 mt-1">
-              Essayez de modifier votre recherche ou de réinitialiser le filtre par pays.
+              Essayez de réinitialiser le filtre par pays ou le terme de recherche.
             </p>
           </div>
         )}

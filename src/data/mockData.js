@@ -1,4 +1,4 @@
-// Datasets pour CYBERVIGIE — Vigilance Cyber & Traçabilité des Menaces
+// Datasets Enrichis pour CYBERVIGIE — Vigilance Cyber & Traçabilité des Menaces
 
 export const MOCK_VICTIMS = [
   {
@@ -7,14 +7,24 @@ export const MOCK_VICTIMS = [
     group_name: 'SilentRansomGroup',
     discovered: '2026-08-20T16:52:00Z',
     attack_date: '2026-08-20T16:52:00Z',
-    country: 'N/A',
-    country_code: 'N/A',
-    website: 'ransomware.live',
+    country: 'États-Unis',
+    country_code: 'US',
+    website: 'troutman.com',
     screenshot: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format&fit=crop&q=80',
-    description: 'Troutman Pepper Locke * Reminger $67.6 Million * Riker Danzig Scherer Hyland & Perretti $37.6 Million LEAKED DATA: Troutman Pepper Locke Revenue: $959.8 Million.',
-    claim_url: '#',
-    sector: 'Not Found',
-    status: 'RANSOMWARE'
+    description: 'Compromission majeure du cabinet d avocats international Troutman Pepper Locke. Exfiltration massive de contrats clients confidentiels, données financières internes et litiges en cours.',
+    claim_url: 'https://ransomware.live/#/group/SilentRansomGroup',
+    sector: 'Services Juridiques & Droit',
+    status: 'CRITIQUE',
+    data_volume: '1.4 TB',
+    severity_score: 9.6,
+    leaked_data_types: ['Contrats Clients', 'Audits Financiers', 'Correspondances Juridiques', 'PII Employés'],
+    iocs: {
+      ips: ['185.220.101.5', '194.165.16.42', '45.142.214.88'],
+      onion: 'http://silentransom4v2xk9a0q.onion/leak/troutman',
+      hashes: ['e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'f4a2b9188e40129a008b417c8d9e2182']
+    },
+    mitre_ttps: ['T1566 (Phishing Spear)', 'T1059 (Command & Scripting Interpreter)', 'T1486 (Data Encrypted for Impact)'],
+    full_executive_summary: "L'attaque par extorsion a été initiée via un compromis d'identifiants VPN non protégés par MFA. Le groupe SilentRansomGroup exige la somme de 5 millions de dollars en Monero sous peine de publication intégrale des 1.4 TB de données confidentielles extraites des serveurs de fichiers de New York et Chicago."
   },
   {
     id: 'v2',
@@ -24,12 +34,22 @@ export const MOCK_VICTIMS = [
     attack_date: '2026-08-20T16:50:00Z',
     country: 'Inde',
     country_code: 'IN',
-    website: 'ransomware.live',
+    website: 'du.ac.in',
     screenshot: '',
-    description: 'Data breach claiming sensitive student and faculty records from DU database servers.',
-    claim_url: '#',
-    sector: 'Éducation',
-    status: 'RANSOMWARE'
+    description: 'Violation de base de données universitaire exposant les dossiers administratifs, notes académiques et données d identification de plus de 450 000 étudiants et professeurs.',
+    claim_url: 'https://ransomware.live/#/group/DYSPHOR1A',
+    sector: 'Éducation & Recherche',
+    status: 'ÉLEVÉ',
+    data_volume: '480 GB',
+    severity_score: 8.8,
+    leaked_data_types: ['Dossiers Étudiants', 'Base MySQL Utilisateurs', 'Salaires Enseignants', 'Empreintes Bionumériques'],
+    iocs: {
+      ips: ['103.251.140.12', '185.220.100.240'],
+      onion: 'http://dysphoria7xleak4q9.onion/du-leak',
+      hashes: ['9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08']
+    },
+    mitre_ttps: ['T1190 (Exploit Public-Facing Application)', 'T1078 (Valid Accounts)', 'T1567 (Exfiltration Over Web Service)'],
+    full_executive_summary: "Le groupe DYSPHOR1A s'est introduit dans le portail d'inscription académique en exploitant une faille SQL injection non corrigée (CVE-2026-3012). Le dump SQL de 480 GB est mis en vente aux enchères sur les canaux Telegram cybercriminels."
   },
   {
     id: 'v3',
@@ -39,12 +59,22 @@ export const MOCK_VICTIMS = [
     attack_date: '2026-08-20T15:31:00Z',
     country: 'Italie',
     country_code: 'IT',
-    website: 'ransomware.live',
+    website: 'spaggiari.eu',
     screenshot: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&auto=format&fit=crop&q=80',
-    description: 'This is your last chance to contact before 610GBs of data is sold or leaked. Gruppo Spaggiari Parma.',
-    claim_url: '#',
-    sector: 'Education',
-    status: 'RANSOMWARE'
+    description: 'Dernière sommation avant publication des 610 GB de données volées à l éditeur de logiciels éducatifs Spaggiari Parma.',
+    claim_url: 'https://ransomware.live/#/group/xpl0itrs',
+    sector: 'Logiciels & Éducation',
+    status: 'CRITIQUE',
+    data_volume: '610 GB',
+    severity_score: 9.4,
+    leaked_data_types: ['Code Source Applicatif', 'Identifiants Écoles', 'Certificats SSL/TLS', 'Bases de données SQL'],
+    iocs: {
+      ips: ['91.240.118.172', '193.142.146.210'],
+      onion: 'http://xpl0itrsleakboard5v.onion/spaggiari',
+      hashes: ['5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8']
+    },
+    mitre_ttps: ['T1486 (Data Encrypted for Impact)', 'T1021 (Remote Services)', 'T1003 (OS Credential Dumping)'],
+    full_executive_summary: "Attaque par ransomware ciblant l'infrastructure de production cloud. Les attaquants prétendent détenir le code source complet de la plateforme ClasseViva utilisée par les écoles italiennes. Une rançon de 1.8M€ est exigée."
   },
   {
     id: 'v4',
@@ -54,132 +84,72 @@ export const MOCK_VICTIMS = [
     attack_date: '2026-08-20T14:54:00Z',
     country: 'Espagne',
     country_code: 'ES',
-    website: 'ransomware.live',
+    website: 'velilladesanantonio.es',
     screenshot: '',
-    description: 'Municipal data compromise including administrative records and internal documents.',
-    claim_url: '#',
-    sector: 'Not Found',
-    status: 'RANSOMWARE'
+    description: 'Compromission des serveurs municipaux de la mairie espagnole de Velilla de San Antonio. Données fiscales et registres civils d état civil compromis.',
+    claim_url: 'https://ransomware.live/#/group/kairos',
+    sector: 'Secteur Public & Mairie',
+    status: 'MOYEN',
+    data_volume: '120 GB',
+    severity_score: 7.8,
+    leaked_data_types: ['Fichiers d État Civil', 'Registres d Imposition Local', 'Procès-Verbaux Municipaux'],
+    iocs: {
+      ips: ['45.154.255.71'],
+      onion: 'http://kairosleaksite3q.onion/velilla',
+      hashes: ['7d793037a0760186574b0282f2f435e7']
+    },
+    mitre_ttps: ['T1078 (Valid Accounts)', 'T1489 (Service Stop)', 'T1048 (Exfiltration Over Alternative Protocol)'],
+    full_executive_summary: "Les attaquants ont compromis un compte administrateur local via une attaque Brute Force sur le port RDP exposé sur Internet. Les sauvegardes en ligne ont été chiffrées."
   },
   {
     id: 'v5',
-    post_title: 'Cyrus******',
-    group_name: 'shinyhunters',
-    discovered: '2026-08-20T14:43:00Z',
-    attack_date: '2026-08-20T14:43:00Z',
-    country: 'N/A',
-    country_code: 'N/A',
-    website: 'ransomware.live',
-    screenshot: '',
-    description: 'Leaked customer credentials and database backups.',
-    claim_url: '#',
-    sector: 'Not Found',
-    status: 'RANSOMWARE'
-  },
-  {
-    id: 'v6',
-    post_title: 'NetExam',
-    group_name: 'emperador',
-    discovered: '2026-08-20T13:50:00Z',
-    attack_date: '2026-08-20T13:50:00Z',
-    country: 'N/A',
-    country_code: 'N/A',
-    website: 'ransomware.live',
-    screenshot: '',
-    description: 'Enterprise LMS learning portal breach including corporate certifications and employee PII.',
-    claim_url: '#',
-    sector: 'Education, Retail, Other',
-    status: 'RANSOMWARE'
-  },
-  {
-    id: 'v7',
-    post_title: 'Be Media',
-    group_name: 'play',
-    discovered: '2026-08-20T13:28:00Z',
-    attack_date: '2026-08-20T13:28:00Z',
-    country: 'N/A',
-    country_code: 'N/A',
-    website: 'ransomware.live',
-    screenshot: '',
-    description: 'Digital marketing group internal files, financial audits and client contracts exfiltrated.',
-    claim_url: '#',
-    sector: 'Not Found',
-    status: 'RANSOMWARE'
-  },
-  {
-    id: 'v8',
-    post_title: 'Latoplast',
-    group_name: 'play',
-    discovered: '2026-08-20T13:27:00Z',
-    attack_date: '2026-08-20T13:27:00Z',
-    country: 'Lettonie',
-    country_code: 'LV',
-    website: 'ransomware.live',
-    screenshot: '',
-    description: 'Industrial manufacturing company target of Play ransomware payload.',
-    claim_url: '#',
-    sector: 'Industrie',
-    status: 'RANSOMWARE'
-  },
-  {
-    id: 'v9',
     post_title: 'Logitech International S.A.',
     group_name: 'qilin',
     discovered: '2026-08-19T22:15:00Z',
     attack_date: '2026-08-19T22:15:00Z',
     country: 'Suisse',
     country_code: 'CH',
-    website: 'ransomware.live',
+    website: 'logitech.com',
     screenshot: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80',
-    description: 'R&D schematics and confidential vendor supply agreements uploaded to Qilin onion portal.',
-    claim_url: '#',
-    sector: 'Technologie',
-    status: 'RANSOMWARE'
+    description: 'Publication de schémas R&D matériels et accords de distribution internationaux confidentiels de Logitech par le groupe Qilin.',
+    claim_url: 'https://ransomware.live/#/group/qilin',
+    sector: 'Technologie & Matériel',
+    status: 'CRITIQUE',
+    data_volume: '2.1 TB',
+    severity_score: 9.8,
+    leaked_data_types: ['Plans R&D Matériel', 'Schémas PCB Brevetés', 'Contrats Fournisseurs', 'Fichiers Firmware C++'],
+    iocs: {
+      ips: ['185.220.101.7', '194.26.29.112'],
+      onion: 'http://qilin2rev4x9.onion/posts/logitech-sa',
+      hashes: ['a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3']
+    },
+    mitre_ttps: ['T1190 (Exploit Public-Facing Application)', 'T1558 (Steal or Forge Kerberos Tickets)', 'T1486 (Data Encrypted for Impact)'],
+    full_executive_summary: "Qilin a réussi une élévation de privilèges Domain Admin après avoir exploité la vulnérabilité Zero-Day sur la passerelle VPN d'ingénierie. 2.1 TB de données industrielles ont été publiées sur le réseau Tor."
   },
   {
-    id: 'v10',
+    id: 'v6',
     post_title: 'Centre Hospitalier Régional de France',
     group_name: 'LockBit 3.0',
     discovered: '2026-08-19T18:40:00Z',
     attack_date: '2026-08-19T18:40:00Z',
     country: 'France',
     country_code: 'FR',
-    website: 'ransomware.live',
+    website: 'chr-france.fr',
     screenshot: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600&auto=format&fit=crop&q=80',
-    description: 'Données médicales et dossiers d administrateurs exposés suite à une intrusion.',
-    claim_url: '#',
-    sector: 'Santé',
-    status: 'RANSOMWARE'
-  },
-  {
-    id: 'v11',
-    post_title: 'United States Defense Logistics Logistics Partner',
-    group_name: 'BlackCat / ALPHV',
-    discovered: '2026-08-19T11:20:00Z',
-    attack_date: '2026-08-19T11:20:00Z',
-    country: 'États-Unis',
-    country_code: 'US',
-    website: 'ransomware.live',
-    screenshot: '',
-    description: 'Subcontractor files leaked online.',
-    claim_url: '#',
-    sector: 'Défense',
-    status: 'RANSOMWARE'
-  },
-  {
-    id: 'v12',
-    post_title: 'Bangkok Commercial Aviation Services',
-    group_name: 'Akira',
-    discovered: '2026-08-18T09:12:00Z',
-    attack_date: '2026-08-18T09:12:00Z',
-    country: 'Thaïlande',
-    country_code: 'TH',
-    website: 'ransomware.live',
-    screenshot: '',
-    description: 'Flight manifests and ground control maintenance logs published.',
-    claim_url: '#',
-    sector: 'Transport',
-    status: 'RANSOMWARE'
+    description: 'Données médicales confidentielles, dossiers de soins et comptes d administrateurs exposés suite à une exfiltration LockBit 3.0.',
+    claim_url: 'https://ransomware.live/#/group/LockBit%203.0',
+    sector: 'Santé & Hôpital',
+    status: 'CRITIQUE',
+    data_volume: '850 GB',
+    severity_score: 9.7,
+    leaked_data_types: ['Dossiers Médicaux (DPI)', 'Imagerie Scanner/IRM', 'Données Sécurité Sociale', 'Fichiers RH Praticiens'],
+    iocs: {
+      ips: ['185.220.101.4', '45.142.214.10'],
+      onion: 'http://lockbit3v4q9a0x.onion/post/chr-fr',
+      hashes: ['2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae']
+    },
+    mitre_ttps: ['T1566 (Phishing)', 'T1486 (Data Encrypted for Impact)', 'T1071 (Application Layer Protocol)'],
+    full_executive_summary: "L'attaque a perturbé les urgences et le système d'archivage d'imagerie médicale. L'ANSSI et le CERT-FR ont été dépêchés sur place pour appuyer le déchiffrement et l'assainissement du réseau Active Directory."
   }
 ];
 
@@ -188,12 +158,12 @@ export const MOCK_TOP_GROUPS = [
   { name: 'direwolf', percentage: 7.0, count: 14, color: '#38bdf8' },
   { name: 'incransom', percentage: 6.0, count: 12, color: '#818cf8' },
   { name: 'titan', percentage: 4.5, count: 9, color: '#c084fc' },
-  { name: 'xpl0itrs', percentage: 4.0, count: 8, color: '#f472b6' }
+  { name: 'xpl0itrs', percentage: 4.0, count: 8, color: '#ff2a5f' }
 ];
 
 export const MOCK_CONTINENTS = [
   { name: 'Europe', percentage: 35.0, count: 70, color: '#3b82f6' },
-  { name: 'Amérique du Nord', percentage: 29.0, count: 58, color: '#ef4444' },
+  { name: 'Amérique du Nord', percentage: 29.0, count: 58, color: '#ff2a5f' },
   { name: 'Asie', percentage: 14.0, count: 28, color: '#10b981' },
   { name: 'Autres', percentage: 12.5, count: 25, color: '#64748b' },
   { name: 'Amérique du Sud', percentage: 5.5, count: 11, color: '#f97316' },
@@ -217,66 +187,50 @@ export const MOCK_TOP_COUNTRIES = [
 export const MOCK_APT_FORUMS = [
   {
     id: 'apt-1',
-    name: 'RansomChats',
+    name: 'RansomChats Archive',
     url: 'https://github.com/Casualtek/Ransomchats',
     status: 'ONLINE',
     is_onion: false,
-    description: 'Archive et journaux de chat de négociation de ransomware.'
+    description: 'Archive et journaux de chat de négociation de ransomware en temps réel.'
   },
   {
     id: 'apt-2',
-    name: 'Ransomfeed',
+    name: 'Ransomfeed Cyber Intelligence',
     url: 'https://ransom.insicurezzadigitale.com/index.php',
     status: 'ONLINE',
     is_onion: false,
-    description: 'Feed automatisé des annonces et fuites de ransomware.'
+    description: 'Feed automatisé des annonces et fuites de ransomware mondiales.'
   },
   {
     id: 'apt-3',
-    name: 'RANSOM DB',
+    name: 'RANSOM DB Global Threat Vault',
     url: 'https://www.ransom-db.com',
     status: 'ONLINE',
     is_onion: false,
-    description: 'Base de données des victimes et groupes cybercriminels.'
+    description: 'Base de données des victimes et groupes cybercriminels répertoriés.'
   },
   {
     id: 'apt-4',
-    name: 'RANSOMWARE GROUP SITES (list)',
+    name: 'Ransomwatch Index Feed',
     url: 'https://ransomwatch.telemetry.ltd/#/INDEX',
     status: 'ONLINE',
     is_onion: false,
-    description: 'Monitoring en direct des sites Tor de fuites.'
+    description: 'Monitoring en direct des blogs et sites Tor de fuites d extorsion.'
   },
   {
     id: 'apt-5',
-    name: 'RANSOMWARE GROUP SITES (list)',
+    name: 'Onion Leak Mirror Alpha',
     url: 'http://thexfvx7hqcrpgtm.onion',
     status: 'OFFLINE',
     is_onion: true,
-    description: 'Miroir .onion de surveillance des groupes APT.'
-  },
-  {
-    id: 'apt-6',
-    name: 'RANSOMWARE GROUP SITES (list)',
-    url: 'http://ransomwr3tsydeii4q43vazm7wofla5ujdajquitomtd47cxjtfgwyd.onion',
-    status: 'ONLINE',
-    is_onion: true,
-    description: 'Annuaire de blogs de fuite d extorsion.'
-  },
-  {
-    id: 'apt-7',
-    name: 'RANSOMWARE GROUPS MONITORING TOOL',
-    url: 'https://www.ransomlook.io/',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Plateforme d analyse d activité et de télémétrie APT.'
+    description: 'Miroir .onion de surveillance des groupes APT russes.'
   }
 ];
 
 export const MOCK_UNDERGROUND_FORUMS = [
   {
     id: 'ug-1',
-    name: '0x00sec',
+    name: '0x00sec Security Hub',
     url: 'https://0x00sec.org/',
     status: 'ONLINE',
     is_onion: false,
@@ -284,59 +238,27 @@ export const MOCK_UNDERGROUND_FORUMS = [
   },
   {
     id: 'ug-2',
-    name: '4CHEAT',
+    name: '4CHEAT Underground Forum',
     url: 'https://4cheat.ru/',
     status: 'ONLINE',
     is_onion: false,
-    description: 'Forum underground d exploits et de développement de cheats.'
+    description: 'Forum underground d exploits et de développement de malwares.'
   },
   {
     id: 'ug-3',
-    name: '589forum',
-    url: 'https://589forum.org/',
-    status: 'OFFLINE',
-    is_onion: false,
-    description: 'Forum russophone spécialisé en vente de bases de données.'
-  },
-  {
-    id: 'ug-4',
-    name: 'AGAINSTTHEWEST',
-    url: 'http://giphvoitymatg4cv7bxqh5dz6sn6bfscywoat4qtslztkomf5lavrayd.onion',
-    status: 'OFFLINE',
-    is_onion: true,
-    description: 'Site underground d exfiltration hacktiviste.'
-  },
-  {
-    id: 'ug-5',
-    name: 'ALLIGATOR',
-    url: 'https://alligator.cash/',
-    status: 'OFFLINE',
-    is_onion: false,
-    description: 'Plateforme de blanchiment et de services financiers underground.'
-  },
-  {
-    id: 'ug-6',
-    name: 'ALTENEN (Deep)',
+    name: 'ALTENEN Deep Market',
     url: 'https://altenens.is',
     status: 'ONLINE',
     is_onion: false,
     description: 'Forum historique de carding et d ingénierie sociale.'
   },
   {
-    id: 'ug-7',
-    name: 'ALPHV Forum',
+    id: 'ug-4',
+    name: 'ALPHV / BlackCat Affiliate Forum',
     url: 'https://alphv.pro',
     status: 'ONLINE',
     is_onion: false,
     description: 'Forum de recrutement d affiliés du groupe BlackCat/ALPHV.'
-  },
-  {
-    id: 'ug-8',
-    name: 'Antichat',
-    url: 'https://forum.antichat.com',
-    status: 'OFFLINE',
-    is_onion: false,
-    description: 'Communauté d experts en failles web et attaques réseau.'
   }
 ];
 
@@ -351,7 +273,7 @@ export const MOCK_TELEGRAM_CHANNELS = [
   },
   {
     id: 'tg-2',
-    name: 'HUBHEAD Logs',
+    name: 'HUBHEAD Logs RedLine',
     url: 'https://t.me/+fcxhFl9JSRE3YTdi',
     status: 'VALID',
     is_onion: false,
@@ -359,51 +281,11 @@ export const MOCK_TELEGRAM_CHANNELS = [
   },
   {
     id: 'tg-3',
-    name: '.boxed.pw',
-    url: 'https://t.me/+0fqudHsyHp83MWQx',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Vente et partage d accès initial et de bases de données pwned.'
-  },
-  {
-    id: 'tg-4',
-    name: 'Luffich Logs - Redline Stealer',
-    url: 'https://t.me/+NshXLCbUEZkxZDMy',
-    status: 'EXPIRED',
-    is_onion: false,
-    description: 'Canal Telegram révoqué pour violation des CGU.'
-  },
-  {
-    id: 'tg-5',
-    name: "Goblin's Free Logs",
+    name: 'Goblin Free Stealer Logs',
     url: 'https://t.me/+0ZheKtZ368YxMDBI',
     status: 'VALID',
     is_onion: false,
-    description: 'Partage gratuit de logs de stealers pour analyse.'
-  },
-  {
-    id: 'tg-6',
-    name: 'Log Leaks Group',
-    url: 'https://t.me/+V_OM-vx0YnSN7nzH',
-    status: 'VALID',
-    is_onion: false,
-    description: 'Groupe d échange de données d identification exfiltrées.'
-  },
-  {
-    id: 'tg-7',
-    name: 'Bank Logs',
-    url: 'https://t.me/banklogplug2',
-    status: 'OFFLINE',
-    is_onion: false,
-    description: 'Canal de vente d accès banques en ligne et logs de sessions.'
-  },
-  {
-    id: 'tg-8',
-    name: 'Redline Stealer',
-    url: 'https://t.me/berserklogs',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Service de déploiement et de diffusion Redline Malware.'
+    description: 'Partage gratuit de logs de stealers pour analyse Threat Intel.'
   }
 ];
 
@@ -411,8 +293,8 @@ export const MOCK_ANSSI_ALERTS = [
   {
     id: 'anssi-1',
     date: '21 juillet 2026',
-    title: 'Multiples vulnérabilités dans Microsoft Sharepoint (22 juillet 2026)',
-    summary: 'Le 14 juillet 2026, à l occasion de sa mise à jour mensuelle, Microsoft a publié des correctifs pour deux vulnérabilités critiques affectant SharePoint (CVE-2026-50522 et CVE-2026-58644) permettant à un attaquant non authentifié d exécuter du code à distance.',
+    title: 'Multiples vulnérabilités critiques dans Microsoft Sharepoint (CVE-2026-50522)',
+    summary: 'Microsoft a publié des correctifs urgents pour deux vulnérabilités critiques affectant SharePoint (CVE-2026-50522 et CVE-2026-58644) permettant une exécution de code à distance sans authentification.',
     url: 'https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0612/',
     severity: 'CRITICAL',
     cve: ['CVE-2026-50522', 'CVE-2026-58644']
@@ -420,38 +302,11 @@ export const MOCK_ANSSI_ALERTS = [
   {
     id: 'anssi-2',
     date: '19 juillet 2026',
-    title: 'Multiples vulnérabilités dans WordPress (20 juillet 2026)',
-    summary: 'Le 17 juillet 2026, WordPress a publié un correctif pour deux vulnérabilités : CVE-2026-60137 (injection SQL) et CVE-2026-63030 (contournement de politique de sécurité). Un attaquant peut exploiter ces vulnérabilités de manière combinée pour prendre le contrôle du site.',
+    title: 'Multiples vulnérabilités dans WordPress (CVE-2026-60137)',
+    summary: 'WordPress a publié un avis de sécurité concernant une injection SQL et un contournement de sécurité permettant à un attaquant distant d exécuter des commandes arbitraires.',
     url: 'https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0608/',
     severity: 'HIGH',
     cve: ['CVE-2026-60137', 'CVE-2026-63030']
-  },
-  {
-    id: 'anssi-3',
-    date: '14 juillet 2026',
-    title: 'Multiples vulnérabilités dans Sonicwall Secure Mobile Access (15 juillet 2026)',
-    summary: 'Sonicwall a publié un avis de sécurité concernant deux vulnérabilités affectant les équipements SMA 1000. La vulnérabilité critique CVE-2026-15409 permet une falsification de requêtes côté serveur (SSRF) par un attaquant non authentifié.',
-    url: 'https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0595/',
-    severity: 'CRITICAL',
-    cve: ['CVE-2026-15409']
-  },
-  {
-    id: 'anssi-4',
-    date: '14 mai 2026',
-    title: '[MàJ] Vulnérabilité dans Microsoft Exchange Server (15 mai 2026)',
-    summary: '[Mise à jour du 11 juin 2026] Microsoft a publié un avis de sécurité concernant la vulnérabilité CVE-2026-42897 affectant Exchange Server. Elle permet à un attaquant non authentifié d exécuter du code à distance.',
-    url: 'https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0412/',
-    severity: 'HIGH',
-    cve: ['CVE-2026-42897']
-  },
-  {
-    id: 'anssi-5',
-    date: '30 mars 2026',
-    title: 'Vulnérabilité dans F5 BIG-IP Access Policy Manager (31 mars 2026)',
-    summary: 'F5 a publié un avis de sécurité concernant la vulnérabilité CVE-2025-53521 affectant BIG-IP APM. Elle permet à un attaquant non authentifié d exécuter du code à distance. L éditeur indique que cette vulnérabilité est exploitée.',
-    url: 'https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0245/',
-    severity: 'CRITICAL',
-    cve: ['CVE-2025-53521']
   }
 ];
 
@@ -464,18 +319,9 @@ export const MOCK_SCRAPER_SOURCES = [
     category: 'CERT / ANSSI',
     frequency: '15 min',
     status: 'ACTIVE',
-    lastScraped: '2026-08-22T16:10:00Z',
+    lastScraped: new Date().toISOString(),
     itemCount: 412,
-    isCustom: false,
-    cssSelectors: {
-      container: 'item',
-      title: 'title',
-      link: 'link',
-      date: 'pubDate'
-    },
-    customHeaders: {
-      'User-Agent': 'CyberVigie-Scraper/2.4 (CERT-FR Monitor)'
-    }
+    isCustom: false
   },
   {
     id: 'src-2',
@@ -485,123 +331,20 @@ export const MOCK_SCRAPER_SOURCES = [
     category: 'Ransomware',
     frequency: '5 min',
     status: 'ACTIVE',
-    lastScraped: '2026-08-22T16:14:00Z',
+    lastScraped: new Date().toISOString(),
     itemCount: 1845,
-    isCustom: false,
-    cssSelectors: {
-      container: 'Array[Object]',
-      title: 'post_title',
-      link: 'claim_url',
-      date: 'discovered'
-    },
-    customHeaders: {
-      'Accept': 'application/json'
-    }
+    isCustom: false
   },
   {
     id: 'src-3',
-    name: 'BleepingComputer - Cyber Crime',
+    name: 'BleepingComputer - Cyber Crime Feed',
     url: 'https://www.bleepingcomputer.com/feed/',
     type: 'RSS / Atom',
     category: 'Actualités Cyber',
     frequency: '1 heure',
     status: 'ACTIVE',
-    lastScraped: '2026-08-22T15:30:00Z',
+    lastScraped: new Date().toISOString(),
     itemCount: 928,
-    isCustom: false,
-    cssSelectors: {
-      container: 'item',
-      title: 'title',
-      link: 'link',
-      date: 'pubDate'
-    },
-    customHeaders: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) CyberVigie/2.4'
-    }
-  },
-  {
-    id: 'src-4',
-    name: 'Ransomwatch Telemetry Feed',
-    url: 'https://raw.githubusercontent.com/joshhighet/ransomwatch/main/posts.json',
-    type: 'REST API',
-    category: 'APT Forums',
-    frequency: '15 min',
-    status: 'ACTIVE',
-    lastScraped: '2026-08-22T16:05:00Z',
-    itemCount: 683,
-    isCustom: false,
-    cssSelectors: {
-      container: 'json_array',
-      title: 'post_title',
-      link: 'group_name',
-      date: 'discovered'
-    },
-    customHeaders: {
-      'Accept': 'application/json'
-    }
-  },
-  {
-    id: 'src-5',
-    name: 'vx-underground Threat Intelligence',
-    url: 'https://vx-underground.org/api/feed',
-    type: 'REST API',
-    category: 'Underground Forums',
-    frequency: '30 min',
-    status: 'ACTIVE',
-    lastScraped: '2026-08-22T14:45:00Z',
-    itemCount: 346,
-    isCustom: false,
-    cssSelectors: {
-      container: 'payload.items',
-      title: 'headline',
-      link: 'source_url',
-      date: 'timestamp'
-    },
-    customHeaders: {
-      'User-Agent': 'CyberVigie/2.4 Bot'
-    }
-  },
-  {
-    id: 'src-6',
-    name: 'Telegram Botnet & Stealer Logs Aggregator',
-    url: 'https://t.me/s/cybertrack_threat_logs',
-    type: 'Telegram Web',
-    category: 'Telegram',
-    frequency: '5 min',
-    status: 'ACTIVE',
-    lastScraped: '2026-08-22T16:12:00Z',
-    itemCount: 132,
-    isCustom: false,
-    cssSelectors: {
-      container: '.tgme_widget_message',
-      title: '.tgme_widget_message_text',
-      link: '.tgme_widget_message_date',
-      date: 'time'
-    },
-    customHeaders: {
-      'User-Agent': 'CyberVigie Telegram Listener/1.0'
-    }
-  },
-  {
-    id: 'src-7',
-    name: 'Darknet Onion Leak Sites Scraper (Tor Relay)',
-    url: 'http://ransomwr3tsydeii4q43vazm7wofla5ujdajquitomtd47cxjtfgwyd.onion',
-    type: 'HTML DOM Scraper',
-    category: 'APT Forums',
-    frequency: '6 heures',
-    status: 'INACTIVE',
-    lastScraped: '2026-08-21T08:00:00Z',
-    itemCount: 78,
-    isCustom: false,
-    cssSelectors: {
-      container: 'div.post-card',
-      title: 'h2.entry-title',
-      link: 'a.leak-link',
-      date: 'span.date-published'
-    },
-    customHeaders: {
-      'Proxy': 'socks5h://127.0.0.1:9050'
-    }
+    isCustom: false
   }
 ];
-
