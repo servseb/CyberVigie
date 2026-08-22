@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Users, Shield, Globe, Building2, Search, X, PieChart, BarChart3, Filter, RefreshCw, Layers, Flame, HardDrive } from 'lucide-react';
+import { Users, Shield, Globe, Search, X, PieChart, BarChart3, Filter, RefreshCw, Layers, Building2, HardDrive, Flame } from 'lucide-react';
 import WorldMap from './WorldMap';
 import VictimCard from './VictimCard';
+import { MOCK_SECTORS } from '../data/mockData';
 
 export default function VictimsTracker({
   victims,
@@ -16,119 +17,114 @@ export default function VictimsTracker({
   setSearchQuery
 }) {
   const [selectedCountry, setSelectedCountry] = useState('ALL');
+  const [selectedSector, setSelectedSector] = useState('ALL');
   const [localSearch, setLocalSearch] = useState('');
 
-  // Country filter code mapping
+  // Country filters list
   const countryFilters = [
-    { code: 'ALL', label: 'Tous (200)' },
-    { code: 'US', label: 'US (49)' },
-    { code: 'N/A', label: 'N/A (24)' },
-    { code: 'IT', label: 'IT (18)' },
-    { code: 'DE', label: 'DE (17)' },
-    { code: 'GB', label: 'GB (10)' },
-    { code: 'FR', label: 'FR (7)' },
-    { code: 'TH', label: 'TH (5)' },
-    { code: 'ES', label: 'ES (4)' },
-    { code: 'CA', label: 'CA (4)' },
-    { code: 'BR', label: 'BR (4)' },
-    { code: 'AU', label: 'AU (4)' },
-    { code: 'IN', label: 'IN (3)' },
-    { code: 'ZA', label: 'ZA (3)' },
-    { code: 'TW', label: 'TW (3)' },
-    { code: 'MY', label: 'MY (3)' },
-    { code: 'MX', label: 'MX (3)' },
-    { code: 'SE', label: 'SE (3)' },
-    { code: 'CH', label: 'CH (2)' },
-    { code: 'ID', label: 'ID (2)' },
-    { code: 'JP', label: 'JP (2)' }
+    { code: 'ALL', label: 'Tous les Pays' },
+    { code: 'FR', label: '🇫🇷 France (7)' },
+    { code: 'US', label: '🇺🇸 États-Unis (49)' },
+    { code: 'ES', label: '🇪🇸 Espagne (4)' },
+    { code: 'IT', label: '🇮🇹 Italie (18)' },
+    { code: 'DE', label: '🇩🇪 Allemagne (17)' },
+    { code: 'GB', label: '🇬🇧 Royaume-Uni (10)' },
+    { code: 'CH', label: '🇨🇭 Suisse (2)' },
+    { code: 'CA', label: '🇨🇦 Canada (4)' },
+    { code: 'BR', label: '🇧🇷 Brésil (4)' },
+    { code: 'TH', label: '🇹🇭 Thaïlande (5)' }
   ];
 
-  // Filtered victims list
+  // Filter logic for victims (Company Name, Sector, Country & Local Search)
   const filteredVictims = victims.filter((v) => {
     const matchesCountry =
       selectedCountry === 'ALL' ||
       v.country_code?.toUpperCase() === selectedCountry ||
       v.country?.toUpperCase() === selectedCountry;
 
+    const matchesSector =
+      selectedSector === 'ALL' ||
+      (v.sector && v.sector.toLowerCase().includes(selectedSector.toLowerCase()));
+
     const query = localSearch.toLowerCase().trim();
+    const company = (v.company_name || v.post_title || '').toLowerCase();
     const matchesLocal =
       !query ||
-      v.post_title?.toLowerCase().includes(query) ||
+      company.includes(query) ||
       v.group_name?.toLowerCase().includes(query) ||
-      v.country?.toLowerCase().includes(query) ||
-      v.website?.toLowerCase().includes(query);
+      v.sector?.toLowerCase().includes(query) ||
+      v.country?.toLowerCase().includes(query);
 
-    return matchesCountry && matchesLocal;
+    return matchesCountry && matchesSector && matchesLocal;
   });
 
   return (
     <div className="space-y-6 animate-fade-in">
       
-      {/* Bento Grid Metrics Summary Cards (4 KPIs) */}
+      {/* Light Theme KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
-        {/* Metric 1 */}
-        <div className="cyber-card cyber-hud-card p-4 flex items-center justify-between bg-gradient-to-br from-cyan-950/20 via-slate-900 to-slate-950">
+        {/* Metric 1: Total Impacted Companies */}
+        <div className="cyber-card p-5 flex items-center justify-between bg-white border border-slate-200">
           <div>
-            <span className="text-[9px] font-mono font-bold tracking-widest text-cyan-400 uppercase">
-              ACTES ET FUITES TOTALES
+            <span className="text-xs font-mono font-bold tracking-wider text-slate-500 uppercase">
+              SOCIÉTÉS IMPACTÉES
             </span>
-            <div className="text-2xl font-black font-mono text-white mt-0.5">{victims.length}</div>
-            <span className="text-[11px] font-mono text-cyan-300">Base de données indexée</span>
+            <div className="text-3xl font-extrabold font-sans text-slate-900 mt-1">{victims.length}</div>
+            <span className="text-xs font-sans text-indigo-600 font-semibold">Entreprises identifiées</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-md shadow-cyan-500/10">
-            <Users className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600 shadow-sm">
+            <Building2 className="w-6 h-6" />
           </div>
         </div>
 
-        {/* Metric 2 */}
-        <div className="cyber-card cyber-hud-card p-4 flex items-center justify-between bg-gradient-to-br from-rose-950/20 via-slate-900 to-slate-950">
+        {/* Metric 2: Active Cyber Groups */}
+        <div className="cyber-card p-5 flex items-center justify-between bg-white border border-slate-200">
           <div>
-            <span className="text-[9px] font-mono font-bold tracking-widest text-rose-400 uppercase">
-              GROUPES ACTIFS IDENTIFIÉS
+            <span className="text-xs font-mono font-bold tracking-wider text-slate-500 uppercase">
+              GROUPES CYBERCRIMINELS
             </span>
-            <div className="text-2xl font-black font-mono text-white mt-0.5">43</div>
-            <span className="text-[11px] font-mono text-rose-400 flex items-center gap-1">
-              <Flame className="w-3 h-3 text-rose-500 animate-pulse" /> Top : Qilin (19%)
+            <div className="text-3xl font-extrabold font-sans text-slate-900 mt-1">43</div>
+            <span className="text-xs font-sans text-rose-600 font-semibold flex items-center gap-1">
+              <Flame className="w-3.5 h-3.5 text-rose-500" /> Principal : Qilin (19%)
             </span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 shadow-md shadow-rose-500/10">
-            <Shield className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 shadow-sm">
+            <Shield className="w-6 h-6" />
           </div>
         </div>
 
-        {/* Metric 3 */}
-        <div className="cyber-card cyber-hud-card p-4 flex items-center justify-between bg-gradient-to-br from-emerald-950/20 via-slate-900 to-slate-950">
+        {/* Metric 3: Sectors Count */}
+        <div className="cyber-card p-5 flex items-center justify-between bg-white border border-slate-200">
           <div>
-            <span className="text-[9px] font-mono font-bold tracking-widest text-emerald-400 uppercase">
-              TERRITOIRES TOUCHÉS
+            <span className="text-xs font-mono font-bold tracking-wider text-slate-500 uppercase">
+              SECTEURS D'ACTIVITÉ
             </span>
-            <div className="text-2xl font-black font-mono text-white mt-0.5">45</div>
-            <span className="text-[11px] font-mono text-emerald-400">Périmètre mondial</span>
+            <div className="text-3xl font-extrabold font-sans text-slate-900 mt-1">9</div>
+            <span className="text-xs font-sans text-sky-600 font-semibold">Santé, Banque, Auto...</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-md shadow-emerald-500/10">
-            <Globe className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-2xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 shadow-sm">
+            <Layers className="w-6 h-6" />
           </div>
         </div>
 
-        {/* Metric 4 */}
-        <div className="cyber-card cyber-hud-card p-4 flex items-center justify-between bg-gradient-to-br from-amber-950/20 via-slate-900 to-slate-950">
+        {/* Metric 4: Total Volume */}
+        <div className="cyber-card p-5 flex items-center justify-between bg-white border border-slate-200">
           <div>
-            <span className="text-[9px] font-mono font-bold tracking-widest text-amber-400 uppercase">
-              VOLUME TOTAL EXFILTRÉ
+            <span className="text-xs font-mono font-bold tracking-wider text-slate-500 uppercase">
+              DONNÉES EXFILTRÉES
             </span>
-            <div className="text-2xl font-black font-mono text-white mt-0.5">14.8 TB</div>
-            <span className="text-[11px] font-mono text-amber-400">Données confidentielles</span>
+            <div className="text-3xl font-extrabold font-sans text-slate-900 mt-1">14.8 TB</div>
+            <span className="text-xs font-sans text-emerald-600 font-semibold">Volume total identifié</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-md shadow-amber-500/10">
-            <HardDrive className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shadow-sm">
+            <HardDrive className="w-6 h-6" />
           </div>
         </div>
       </div>
 
-      {/* Map & Top Countries Section */}
+      {/* Map & Top Countries */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* World Radar SVG Container */}
         <div className="lg:col-span-2">
           <WorldMap
             selectedCountry={selectedCountry}
@@ -137,14 +133,14 @@ export default function VictimsTracker({
           />
         </div>
 
-        {/* Top 10 Pays Touchés Card */}
-        <div className="cyber-card cyber-hud-card p-4 flex flex-col justify-between">
+        {/* Top 10 Countries Table */}
+        <div className="cyber-card p-5 flex flex-col justify-between bg-white border border-slate-200">
           <div>
-            <div className="flex items-center justify-between mb-3 border-b border-white/[0.06] pb-2">
-              <h3 className="text-xs font-mono font-bold tracking-wider text-purple-400 uppercase flex items-center gap-1.5">
-                <BarChart3 className="w-4 h-4 text-purple-400" /> TOP 10 PAYS TOUCHÉS
+            <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2.5">
+              <h3 className="text-xs font-mono font-bold tracking-wider text-slate-900 uppercase flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-indigo-600" /> TOP PAYS TOUCHÉS
               </h3>
-              <span className="text-[10px] font-mono text-slate-500">Victimes</span>
+              <span className="text-xs font-mono text-slate-500">Entreprises</span>
             </div>
 
             <div className="space-y-1.5">
@@ -152,19 +148,19 @@ export default function VictimsTracker({
                 <div
                   key={i}
                   onClick={() => setSelectedCountry(c.code)}
-                  className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+                  className={`flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-sans transition-all cursor-pointer ${
                     selectedCountry === c.code
-                      ? 'bg-purple-500/20 border border-purple-500/50 text-white font-bold'
-                      : 'bg-slate-950/60 border border-white/[0.04] text-slate-300 hover:bg-slate-800/60'
+                      ? 'bg-indigo-600 text-white font-bold shadow-sm'
+                      : 'bg-slate-50 border border-slate-200/60 text-slate-700 hover:bg-slate-100'
                   }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="w-4 h-4 rounded-full bg-slate-800 text-[9px] flex items-center justify-center text-slate-400 border border-slate-700">
+                  <div className="flex items-center gap-2.5">
+                    <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono ${selectedCountry === c.code ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-600'}`}>
                       {i + 1}
                     </span>
                     <span>{c.country}</span>
                   </div>
-                  <span className="font-bold text-purple-300 text-[11px]">{c.count}</span>
+                  <span className="font-bold text-xs">{c.count}</span>
                 </div>
               ))}
             </div>
@@ -173,131 +169,89 @@ export default function VictimsTracker({
           {selectedCountry !== 'ALL' && (
             <button
               onClick={() => setSelectedCountry('ALL')}
-              className="mt-3 w-full py-1.5 bg-slate-800/80 hover:bg-slate-700 text-xs font-mono text-slate-300 rounded-lg transition-colors border border-slate-700"
+              className="mt-3 w-full py-2 bg-slate-100 hover:bg-slate-200 text-xs font-sans font-semibold text-slate-700 rounded-xl transition-colors border border-slate-200 cursor-pointer"
             >
-              Réinitialiser filtre pays
+              Tous les pays
             </button>
           )}
         </div>
       </div>
 
-      {/* Analytics Section: Top 5 Groups & Continents Breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Top 5 Groupes d'Attaquants */}
-        <div className="cyber-card cyber-hud-card p-4">
-          <div className="flex items-center justify-between mb-3 border-b border-white/[0.06] pb-2">
-            <div>
-              <h3 className="text-xs font-mono font-bold tracking-wider text-cyan-400 uppercase flex items-center gap-1.5">
-                <Shield className="w-4 h-4 text-cyan-400" /> TOP 5 GROUPES D'ATTAQUANTS
-              </h3>
-              <p className="text-[11px] text-slate-400">Taux d'activité relatif</p>
-            </div>
-            <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
-              RANSOMWARE.LIVE
-            </span>
-          </div>
-
-          <div className="space-y-3 pt-1">
-            {topGroups.map((group, i) => (
-              <div key={i} className="space-y-1">
-                <div className="flex justify-between text-xs font-mono">
-                  <span className="text-slate-200 font-semibold flex items-center gap-2">
-                    <span className="text-slate-500">{i + 1}.</span> {group.name}
-                  </span>
-                  <span className="text-cyan-400 font-bold">{group.percentage}%</span>
-                </div>
-                <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-white/[0.05]">
-                  <div
-                    className="h-full bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-full transition-all duration-1000"
-                    style={{ width: `${group.percentage * 4}%` }}
-                  ></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Répartition par Continent */}
-        <div className="cyber-card cyber-hud-card p-4">
-          <div className="flex items-center justify-between mb-3 border-b border-white/[0.06] pb-2">
-            <div>
-              <h3 className="text-xs font-mono font-bold tracking-wider text-purple-400 uppercase flex items-center gap-1.5">
-                <PieChart className="w-4 h-4 text-purple-400" /> RÉPARTITION PAR CONTINENT
-              </h3>
-              <p className="text-[11px] text-slate-400">Part des victimes enregistrées</p>
-            </div>
-            <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">
-              GLOBAL
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center pt-1">
-            {/* Donut Chart */}
-            <div className="relative w-32 h-32 mx-auto flex items-center justify-center">
-              <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
-                <circle cx="50" cy="50" r="38" stroke="#1e293b" strokeWidth="14" fill="transparent" />
-                <circle cx="50" cy="50" r="38" stroke="#3b82f6" strokeWidth="14" strokeDasharray="83 155" strokeDashoffset="0" fill="transparent" />
-                <circle cx="50" cy="50" r="38" stroke="#ff2a5f" strokeWidth="14" strokeDasharray="69 169" strokeDashoffset="-83" fill="transparent" />
-                <circle cx="50" cy="50" r="38" stroke="#10b981" strokeWidth="14" strokeDasharray="33 205" strokeDashoffset="-152" fill="transparent" />
-                <circle cx="50" cy="50" r="38" stroke="#f97316" strokeWidth="14" strokeDasharray="13 225" strokeDashoffset="-185" fill="transparent" />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <span className="text-lg font-bold font-mono text-white">{victims.length}</span>
-                <span className="text-[8px] text-slate-400 uppercase font-mono">Victimes</span>
-              </div>
-            </div>
-
-            {/* Continent List */}
-            <div className="space-y-1.5 text-xs font-mono">
-              {continents.map((cont, i) => (
-                <div key={i} className="flex items-center justify-between text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: cont.color }}></span>
-                    <span className="text-[11px] truncate">{cont.name}</span>
-                  </div>
-                  <span className="font-semibold text-white">{cont.percentage}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Directory Search & Victim List Header */}
-      <div className="cyber-card cyber-hud-card p-5 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3">
+      {/* Directory Filter Panel & Sector Selector */}
+      <div className="cyber-card p-6 bg-white border border-slate-200 space-y-5">
+        
+        {/* Section Title */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
           <div>
-            <h2 className="text-base font-bold text-white font-mono flex items-center gap-2 uppercase">
-              <Layers className="w-4 h-4 text-cyan-400" />
-              DOSSIERS & ACTES CYBER RÉPERTORIÉS
+            <h2 className="text-lg font-extrabold text-slate-900 font-sans flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-indigo-600" />
+              RÉPERTOIRE DES SOCIÉTÉS IMPACTÉES PAR SECTEUR
             </h2>
-            <p className="text-xs text-slate-400 font-mono">Cliquer sur "Dossier" pour ouvrir le rapport d'investigation et consulter les IOCs</p>
+            <p className="text-xs text-slate-500 font-sans mt-0.5">
+              Sélectionnez un secteur d'activité ou recherchez le nom d'une entreprise
+            </p>
           </div>
 
-          <div className="text-xs font-mono text-slate-400">
-            <span className="text-cyan-300 font-bold">{filteredVictims.length}</span> / {victims.length} affiché(e)s
+          <div className="text-xs font-mono text-slate-600">
+            Résultats : <span className="text-indigo-600 font-bold text-sm">{filteredVictims.length}</span> société(s)
           </div>
         </div>
 
-        {/* Integrated Filter & Search Bar */}
-        <div className="space-y-3">
+        {/* 1. SECTOR FILTERS CAROUSEL (Mise en valeur explicite des secteurs d'activité) */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-mono font-bold text-slate-700 uppercase flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-indigo-600" /> FILTRER PAR SECTEUR D'ACTIVITÉ :
+            </span>
+            {selectedSector !== 'ALL' && (
+              <button
+                onClick={() => setSelectedSector('ALL')}
+                className="text-xs font-sans text-indigo-600 hover:underline font-semibold cursor-pointer"
+              >
+                Réinitialiser secteur
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar pt-1">
+            {MOCK_SECTORS.map((sec, idx) => {
+              const isActive = selectedSector === sec.name || (sec.name === 'Tous les secteurs' && selectedSector === 'ALL');
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedSector(sec.name === 'Tous les secteurs' ? 'ALL' : sec.name)}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-sans font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 border ${
+                    isActive
+                      ? 'bg-indigo-600 text-white border-indigo-700 shadow-md shadow-indigo-500/20'
+                      : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
+                  }`}
+                >
+                  <span>{sec.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 2. COUNTRY FILTERS & SEARCH INPUT */}
+        <div className="space-y-3 pt-2 border-t border-slate-100">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
-            {/* Main Search Input */}
+            {/* Search Input for Company Name */}
             <div className="md:col-span-8 relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
               <input
                 type="text"
                 value={localSearch}
                 onChange={(e) => setLocalSearch(e.target.value)}
-                placeholder="Filtrer la liste (ex: Logitech, LockBit, France...)"
-                className="w-full pl-10 pr-9 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-all"
+                placeholder="Rechercher une société (ex: Renault, Sanofi, Air France, Logitech...)"
+                className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-sans text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:bg-white transition-all"
               />
               {localSearch && (
                 <button
                   onClick={() => setLocalSearch('')}
-                  className="absolute right-3 top-2.5 text-slate-500 hover:text-white"
+                  className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-4 h-4" />
                 </button>
               )}
             </div>
@@ -310,12 +264,12 @@ export default function VictimsTracker({
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && onApiSearch(searchQuery)}
                 placeholder="Recherche API..."
-                className="flex-1 px-3 py-2 rounded-xl bg-slate-950/80 border border-cyan-500/30 text-xs font-mono text-cyan-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-all"
+                className="flex-1 px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-sans text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 transition-all"
               />
               <button
                 onClick={() => onApiSearch(searchQuery)}
                 disabled={isSearching}
-                className="px-3.5 py-2 rounded-xl bg-cyan-400 text-slate-950 font-bold font-mono text-xs hover:bg-cyan-300 transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer whitespace-nowrap"
+                className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold font-sans text-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer whitespace-nowrap shadow-md shadow-indigo-500/20"
               >
                 {isSearching ? (
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -327,19 +281,17 @@ export default function VictimsTracker({
             </div>
           </div>
 
-          {/* Country Filter Pills Carousel */}
+          {/* Country Pills Carousel */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar pt-1">
-            <span className="text-[10px] font-mono text-slate-500 uppercase flex items-center gap-1 mr-1">
-              <Filter className="w-3 h-3 text-cyan-400" /> Pays:
-            </span>
+            <span className="text-xs font-mono font-bold text-slate-500 uppercase mr-1">Pays:</span>
             {countryFilters.map((cf) => (
               <button
                 key={cf.code}
                 onClick={() => setSelectedCountry(cf.code)}
-                className={`px-2.5 py-1 rounded-md text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-3 py-1 rounded-lg text-xs font-sans whitespace-nowrap transition-all cursor-pointer ${
                   selectedCountry === cf.code
-                    ? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
-                    : 'bg-slate-950/60 border border-white/[0.06] text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-slate-900 text-white font-bold'
+                    : 'bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200'
                 }`}
               >
                 {cf.label}
@@ -348,7 +300,7 @@ export default function VictimsTracker({
           </div>
         </div>
 
-        {/* Victim Cards Grid */}
+        {/* Company Cards Grid */}
         {filteredVictims.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 pt-2">
             {filteredVictims.map((victim, idx) => (
@@ -361,11 +313,11 @@ export default function VictimsTracker({
             ))}
           </div>
         ) : (
-          <div className="py-12 text-center bg-slate-950/50 rounded-xl border border-white/[0.06]">
-            <Shield className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-            <h4 className="text-xs font-bold text-slate-300 font-mono">Aucun dossier ne correspond à la recherche</h4>
-            <p className="text-[11px] text-slate-500 mt-1">
-              Essayez de réinitialiser le filtre par pays ou le terme de recherche.
+          <div className="py-12 text-center bg-slate-50 rounded-2xl border border-slate-200">
+            <Building2 className="w-10 h-10 text-slate-400 mx-auto mb-2" />
+            <h4 className="text-sm font-bold text-slate-800 font-sans">Aucune société ne correspond à votre filtre</h4>
+            <p className="text-xs text-slate-500 mt-1">
+              Essayez de réinitialiser le filtre de secteur d'activité ou le nom de l'entreprise recherchée.
             </p>
           </div>
         )}

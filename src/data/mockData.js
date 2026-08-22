@@ -1,8 +1,9 @@
-// Datasets Enrichis pour CYBERVIGIE — Vigilance Cyber & Traçabilité des Menaces
+// Datasets pour CYBERVIGIE — Vigilance Cyber des Entreprises & Secteurs Impactés
 
 export const MOCK_VICTIMS = [
   {
     id: 'v1',
+    company_name: 'Troutman Pepper Locke',
     post_title: 'Troutman Pepper Locke',
     group_name: 'SilentRansomGroup',
     discovered: '2026-08-20T16:52:00Z',
@@ -11,48 +12,106 @@ export const MOCK_VICTIMS = [
     country_code: 'US',
     website: 'troutman.com',
     screenshot: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format&fit=crop&q=80',
-    description: 'Compromission majeure du cabinet d avocats international Troutman Pepper Locke. Exfiltration massive de contrats clients confidentiels, données financières internes et litiges en cours.',
+    description: 'Compromission du cabinet d avocats international Troutman Pepper Locke. Exfiltration massive de contrats clients confidentiels, audits financiers et litiges.',
     claim_url: 'https://ransomware.live/#/group/SilentRansomGroup',
     sector: 'Services Juridiques & Droit',
+    sector_icon: 'Scale',
     status: 'CRITIQUE',
     data_volume: '1.4 TB',
     severity_score: 9.6,
     leaked_data_types: ['Contrats Clients', 'Audits Financiers', 'Correspondances Juridiques', 'PII Employés'],
     iocs: {
-      ips: ['185.220.101.5', '194.165.16.42', '45.142.214.88'],
+      ips: ['185.220.101.5', '194.165.16.42'],
       onion: 'http://silentransom4v2xk9a0q.onion/leak/troutman',
-      hashes: ['e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'f4a2b9188e40129a008b417c8d9e2182']
+      hashes: ['e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855']
     },
-    mitre_ttps: ['T1566 (Phishing Spear)', 'T1059 (Command & Scripting Interpreter)', 'T1486 (Data Encrypted for Impact)'],
-    full_executive_summary: "L'attaque par extorsion a été initiée via un compromis d'identifiants VPN non protégés par MFA. Le groupe SilentRansomGroup exige la somme de 5 millions de dollars en Monero sous peine de publication intégrale des 1.4 TB de données confidentielles extraites des serveurs de fichiers de New York et Chicago."
+    mitre_ttps: ['T1566 (Phishing Spear)', 'T1059 (Command Line)', 'T1486 (Data Encrypted)'],
+    full_executive_summary: "Exfiltration majeure de 1.4 TB de contrats juridiques et audits confidentiels suite à une compromission d'identifiants VPN."
   },
   {
     id: 'v2',
-    post_title: 'The University of Delhi (DU)',
-    group_name: 'DYSPHOR1A',
-    discovered: '2026-08-20T16:50:00Z',
-    attack_date: '2026-08-20T16:50:00Z',
-    country: 'Inde',
-    country_code: 'IN',
-    website: 'du.ac.in',
-    screenshot: '',
-    description: 'Violation de base de données universitaire exposant les dossiers administratifs, notes académiques et données d identification de plus de 450 000 étudiants et professeurs.',
-    claim_url: 'https://ransomware.live/#/group/DYSPHOR1A',
-    sector: 'Éducation & Recherche',
-    status: 'ÉLEVÉ',
-    data_volume: '480 GB',
-    severity_score: 8.8,
-    leaked_data_types: ['Dossiers Étudiants', 'Base MySQL Utilisateurs', 'Salaires Enseignants', 'Empreintes Bionumériques'],
+    company_name: 'Renault Group (Filiale Espagne)',
+    post_title: 'Renault Group (Usines Séville)',
+    group_name: 'Qilin',
+    discovered: '2026-08-20T16:10:00Z',
+    attack_date: '2026-08-20T16:10:00Z',
+    country: 'Espagne',
+    country_code: 'ES',
+    website: 'renaultgroup.com',
+    screenshot: 'https://images.unsplash.com/photo-1563720223185-11003d516935?w=600&auto=format&fit=crop&q=80',
+    description: 'Attaque ciblée sur les serveurs de la filiale industrielle de Renault à Séville. Plans d assemblage de boîtes de vitesses et schémas logistiques compromis.',
+    claim_url: 'https://ransomware.live/#/group/Qilin',
+    sector: 'Automobile & Transport',
+    sector_icon: 'Car',
+    status: 'CRITIQUE',
+    data_volume: '1.8 TB',
+    severity_score: 9.7,
+    leaked_data_types: ['Schémas Logistiques', 'Plans d Assemblage', 'Données Fournisseurs Tier-1', 'Bases de données Usines'],
     iocs: {
-      ips: ['103.251.140.12', '185.220.100.240'],
-      onion: 'http://dysphoria7xleak4q9.onion/du-leak',
-      hashes: ['9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08']
+      ips: ['91.240.118.15', '185.220.101.9'],
+      onion: 'http://qilinleaksite77.onion/renault-spain',
+      hashes: ['a4b2c8190012e847c10b23019842188c991823a8']
     },
-    mitre_ttps: ['T1190 (Exploit Public-Facing Application)', 'T1078 (Valid Accounts)', 'T1567 (Exfiltration Over Web Service)'],
-    full_executive_summary: "Le groupe DYSPHOR1A s'est introduit dans le portail d'inscription académique en exploitant une faille SQL injection non corrigée (CVE-2026-3012). Le dump SQL de 480 GB est mis en vente aux enchères sur les canaux Telegram cybercriminels."
+    mitre_ttps: ['T1190 (Exploit Public Application)', 'T1021 (Remote Desktop Protocol)', 'T1486 (Chiffrement Système)'],
+    full_executive_summary: "Attaque par ransomware ciblant l'infrastructure de production industrielle d'automobiles. Revendication de 1.8 TB de plans techniques."
   },
   {
     id: 'v3',
+    company_name: 'Sanofi Pasteur France',
+    post_title: 'Sanofi Pasteur (Centre R&D Lyon)',
+    group_name: 'LockBit 3.0',
+    discovered: '2026-08-20T15:45:00Z',
+    attack_date: '2026-08-20T15:45:00Z',
+    country: 'France',
+    country_code: 'FR',
+    website: 'sanofi.fr',
+    screenshot: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80',
+    description: 'Vol de données au sein du pôle de recherche vaccinale de Lyon. Dossiers d essais cliniques phase III et brevets pharmaceutiques ciblés.',
+    claim_url: 'https://ransomware.live/#/group/LockBit%203.0',
+    sector: 'Santé & Pharmacie',
+    sector_icon: 'Activity',
+    status: 'CRITIQUE',
+    data_volume: '2.4 TB',
+    severity_score: 9.9,
+    leaked_data_types: ['Essais Cliniques Phase III', 'Formules Brevetées', 'Identités Patients', 'Accords de Licence'],
+    iocs: {
+      ips: ['45.142.214.12', '185.220.100.240'],
+      onion: 'http://lockbit3v4q9a0x.onion/sanofi-lyon',
+      hashes: ['8f96d081884c7d659a2feaa0c55ad015a3bf4f1b']
+    },
+    mitre_ttps: ['T1566 (Phishing)', 'T1558 (Kerberoasting)', 'T1486 (Ransomware Impact)'],
+    full_executive_summary: "Infiltration dans le réseau d'ingénierie pharmaceutique. Publication de preuves d'exfiltration de formules médicales brevétées."
+  },
+  {
+    id: 'v4',
+    company_name: 'Air France-KLM IT Logistics',
+    post_title: 'Air France-KLM (Systèmes Fret)',
+    group_name: 'BlackCat / ALPHV',
+    discovered: '2026-08-20T14:30:00Z',
+    attack_date: '2026-08-20T14:30:00Z',
+    country: 'France',
+    country_code: 'FR',
+    website: 'airfranceklm.com',
+    screenshot: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80',
+    description: 'Intrusion dans les sous-systèmes de gestion logistique du fret aérien et manifests d expédition cargo internationaux.',
+    claim_url: 'https://ransomware.live/#/group/BlackCat',
+    sector: 'Aéronautique & Transport',
+    sector_icon: 'Plane',
+    status: 'ÉLEVÉ',
+    data_volume: '920 GB',
+    severity_score: 8.9,
+    leaked_data_types: ['Manifestes de Fret', 'Registres Douaniers', 'Contrats de Maintenance', 'Comptes Clients Cargo'],
+    iocs: {
+      ips: ['193.142.146.10', '91.240.118.99'],
+      onion: 'http://alphvleakportal99.onion/airfrance-cargo',
+      hashes: ['7c893037a0760186574b0282f2f435e7']
+    },
+    mitre_ttps: ['T1078 (Valid Accounts)', 'T1048 (Exfiltration Web)', 'T1489 (Service Stop)'],
+    full_executive_summary: "Attaque ciblée sur les serveurs d'inventaire de fret à Roissy CDG sans impact sur les vols passagers."
+  },
+  {
+    id: 'v5',
+    company_name: 'Gruppo Spaggiari Parma',
     post_title: 'Gruppo Spaggiari Parma',
     group_name: 'xpl0itrs',
     discovered: '2026-08-20T15:31:00Z',
@@ -61,48 +120,25 @@ export const MOCK_VICTIMS = [
     country_code: 'IT',
     website: 'spaggiari.eu',
     screenshot: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&auto=format&fit=crop&q=80',
-    description: 'Dernière sommation avant publication des 610 GB de données volées à l éditeur de logiciels éducatifs Spaggiari Parma.',
+    description: 'Sommation d extorsion sur les 610 GB de données scolaires et de bases de données clientes de l éditeur Spaggiari Parma.',
     claim_url: 'https://ransomware.live/#/group/xpl0itrs',
-    sector: 'Logiciels & Éducation',
+    sector: 'Éducation & Recherche',
+    sector_icon: 'BookOpen',
     status: 'CRITIQUE',
     data_volume: '610 GB',
     severity_score: 9.4,
-    leaked_data_types: ['Code Source Applicatif', 'Identifiants Écoles', 'Certificats SSL/TLS', 'Bases de données SQL'],
+    leaked_data_types: ['Code Source Applicatif', 'Identifiants Écoles', 'Certificats SSL', 'SQL Dumps'],
     iocs: {
       ips: ['91.240.118.172', '193.142.146.210'],
       onion: 'http://xpl0itrsleakboard5v.onion/spaggiari',
-      hashes: ['5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8']
+      hashes: ['5e884898da28047151d0e56f8dc6292773603d0d']
     },
-    mitre_ttps: ['T1486 (Data Encrypted for Impact)', 'T1021 (Remote Services)', 'T1003 (OS Credential Dumping)'],
-    full_executive_summary: "Attaque par ransomware ciblant l'infrastructure de production cloud. Les attaquants prétendent détenir le code source complet de la plateforme ClasseViva utilisée par les écoles italiennes. Une rançon de 1.8M€ est exigée."
+    mitre_ttps: ['T1486 (Data Encrypted)', 'T1021 (Remote Services)', 'T1003 (Credential Dumping)'],
+    full_executive_summary: "Ransomware ayant chiffré les serveurs de la plateforme éducative italienne ClasseViva."
   },
   {
-    id: 'v4',
-    post_title: 'Ayuntamiento de Velilla de San Antonio',
-    group_name: 'kairos',
-    discovered: '2026-08-20T14:54:00Z',
-    attack_date: '2026-08-20T14:54:00Z',
-    country: 'Espagne',
-    country_code: 'ES',
-    website: 'velilladesanantonio.es',
-    screenshot: '',
-    description: 'Compromission des serveurs municipaux de la mairie espagnole de Velilla de San Antonio. Données fiscales et registres civils d état civil compromis.',
-    claim_url: 'https://ransomware.live/#/group/kairos',
-    sector: 'Secteur Public & Mairie',
-    status: 'MOYEN',
-    data_volume: '120 GB',
-    severity_score: 7.8,
-    leaked_data_types: ['Fichiers d État Civil', 'Registres d Imposition Local', 'Procès-Verbaux Municipaux'],
-    iocs: {
-      ips: ['45.154.255.71'],
-      onion: 'http://kairosleaksite3q.onion/velilla',
-      hashes: ['7d793037a0760186574b0282f2f435e7']
-    },
-    mitre_ttps: ['T1078 (Valid Accounts)', 'T1489 (Service Stop)', 'T1048 (Exfiltration Over Alternative Protocol)'],
-    full_executive_summary: "Les attaquants ont compromis un compte administrateur local via une attaque Brute Force sur le port RDP exposé sur Internet. Les sauvegardes en ligne ont été chiffrées."
-  },
-  {
-    id: 'v5',
+    id: 'v6',
+    company_name: 'Logitech International S.A.',
     post_title: 'Logitech International S.A.',
     group_name: 'qilin',
     discovered: '2026-08-19T22:15:00Z',
@@ -111,64 +147,105 @@ export const MOCK_VICTIMS = [
     country_code: 'CH',
     website: 'logitech.com',
     screenshot: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80',
-    description: 'Publication de schémas R&D matériels et accords de distribution internationaux confidentiels de Logitech par le groupe Qilin.',
+    description: 'Publication de schémas R&D matériels et d accords de distribution internationaux confidentiels par Qilin.',
     claim_url: 'https://ransomware.live/#/group/qilin',
-    sector: 'Technologie & Matériel',
+    sector: 'Technologie & Électronique',
+    sector_icon: 'Cpu',
     status: 'CRITIQUE',
     data_volume: '2.1 TB',
     severity_score: 9.8,
-    leaked_data_types: ['Plans R&D Matériel', 'Schémas PCB Brevetés', 'Contrats Fournisseurs', 'Fichiers Firmware C++'],
+    leaked_data_types: ['Plans R&D Matériel', 'Schémas PCB Brevetés', 'Contrats Fournisseurs', 'Firmware C++'],
     iocs: {
       ips: ['185.220.101.7', '194.26.29.112'],
       onion: 'http://qilin2rev4x9.onion/posts/logitech-sa',
-      hashes: ['a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3']
+      hashes: ['a665a45920422f9d417e4867efdc4fb8a04a1f3f']
     },
-    mitre_ttps: ['T1190 (Exploit Public-Facing Application)', 'T1558 (Steal or Forge Kerberos Tickets)', 'T1486 (Data Encrypted for Impact)'],
-    full_executive_summary: "Qilin a réussi une élévation de privilèges Domain Admin après avoir exploité la vulnérabilité Zero-Day sur la passerelle VPN d'ingénierie. 2.1 TB de données industrielles ont été publiées sur le réseau Tor."
+    mitre_ttps: ['T1190 (Exploit Application)', 'T1558 (Kerberos Tickets)', 'T1486 (Data Encrypted)'],
+    full_executive_summary: "Qilin s'est introduit via la passerelle VPN d'ingénierie et a exfiltré 2.1 TB de données industrielles."
   },
   {
-    id: 'v6',
-    post_title: 'Centre Hospitalier Régional de France',
-    group_name: 'LockBit 3.0',
-    discovered: '2026-08-19T18:40:00Z',
-    attack_date: '2026-08-19T18:40:00Z',
+    id: 'v7',
+    company_name: 'BNP Paribas Personal Finance (Filiale)',
+    post_title: 'BNP Paribas Personal Finance',
+    group_name: 'Akira',
+    discovered: '2026-08-19T17:10:00Z',
+    attack_date: '2026-08-19T17:10:00Z',
     country: 'France',
     country_code: 'FR',
-    website: 'chr-france.fr',
-    screenshot: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600&auto=format&fit=crop&q=80',
-    description: 'Données médicales confidentielles, dossiers de soins et comptes d administrateurs exposés suite à une exfiltration LockBit 3.0.',
-    claim_url: 'https://ransomware.live/#/group/LockBit%203.0',
-    sector: 'Santé & Hôpital',
+    website: 'bnpparibas.com',
+    screenshot: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=600&auto=format&fit=crop&q=80',
+    description: 'Attaque par extorsion ciblant les archives financières et historiques d octrois de crédits de consommation.',
+    claim_url: 'https://ransomware.live/#/group/Akira',
+    sector: 'Banque & Finance',
+    sector_icon: 'Landmark',
     status: 'CRITIQUE',
-    data_volume: '850 GB',
-    severity_score: 9.7,
-    leaked_data_types: ['Dossiers Médicaux (DPI)', 'Imagerie Scanner/IRM', 'Données Sécurité Sociale', 'Fichiers RH Praticiens'],
+    data_volume: '1.1 TB',
+    severity_score: 9.5,
+    leaked_data_types: ['Dossiers de Crédit', 'RIB & Relevés Bancaires', 'Contrats de Prêt', 'Scoring Risque'],
     iocs: {
-      ips: ['185.220.101.4', '45.142.214.10'],
-      onion: 'http://lockbit3v4q9a0x.onion/post/chr-fr',
-      hashes: ['2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae']
+      ips: ['45.142.214.99', '185.220.101.33'],
+      onion: 'http://akiraleaksite99.onion/bnp-pf',
+      hashes: ['3b893037a0760186574b0282f2f435e9']
     },
-    mitre_ttps: ['T1566 (Phishing)', 'T1486 (Data Encrypted for Impact)', 'T1071 (Application Layer Protocol)'],
-    full_executive_summary: "L'attaque a perturbé les urgences et le système d'archivage d'imagerie médicale. L'ANSSI et le CERT-FR ont été dépêchés sur place pour appuyer le déchiffrement et l'assainissement du réseau Active Directory."
+    mitre_ttps: ['T1566 (Phishing)', 'T1059 (Command Line)', 'T1486 (Chiffrement)'],
+    full_executive_summary: "Extorsion visant les fichiers de scoring crédit. Aucune atteinte au réseau bancaire central."
+  },
+  {
+    id: 'v8',
+    company_name: 'Schneider Electric Energy',
+    post_title: 'Schneider Electric (Division Smarter Grids)',
+    group_name: 'Cactus',
+    discovered: '2026-08-18T19:40:00Z',
+    attack_date: '2026-08-18T19:40:00Z',
+    country: 'France',
+    country_code: 'FR',
+    website: 'se.com',
+    screenshot: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=600&auto=format&fit=crop&q=80',
+    description: 'Compromission des schémas d architecture des réseaux électriques intelligents et composants SCADA.',
+    claim_url: 'https://ransomware.live/#/group/Cactus',
+    sector: 'Énergie & Industrie',
+    sector_icon: 'Zap',
+    status: 'CRITIQUE',
+    data_volume: '1.6 TB',
+    severity_score: 9.7,
+    leaked_data_types: ['Schémas SCADA', 'Spécifications Transformateurs', 'Code Automates PLC', 'Fichiers Clients Utilitaires'],
+    iocs: {
+      ips: ['193.142.146.88', '185.220.101.44'],
+      onion: 'http://cactusleaksite12.onion/schneider',
+      hashes: ['9c893037a0760186574b0282f2f435f0']
+    },
+    mitre_ttps: ['T1190 (Exploit Zero-Day)', 'T1083 (File Discovery)', 'T1486 (Data Encrypted)'],
+    full_executive_summary: "Compromission de la division Smarter Grids avec exfiltration de schémas d'automates industriels."
   }
 ];
 
+export const MOCK_SECTORS = [
+  { name: 'Tous les secteurs', count: 200, icon: 'Layers' },
+  { name: 'Santé & Pharmacie', count: 32, icon: 'Activity' },
+  { name: 'Banque & Finance', count: 28, icon: 'Landmark' },
+  { name: 'Automobile & Transport', count: 25, icon: 'Car' },
+  { name: 'Industrie & Énergie', count: 24, icon: 'Zap' },
+  { name: 'Aéronautique & Défense', count: 19, icon: 'Plane' },
+  { name: 'Technologie & Électronique', count: 22, icon: 'Cpu' },
+  { name: 'Services Juridiques & Droit', count: 18, icon: 'Scale' },
+  { name: 'Éducation & Recherche', count: 17, icon: 'BookOpen' },
+  { name: 'Luxe & Distribution', count: 15, icon: 'ShoppingBag' }
+];
+
 export const MOCK_TOP_GROUPS = [
-  { name: 'qilin', percentage: 19.0, count: 38, color: '#00f2fe' },
-  { name: 'direwolf', percentage: 7.0, count: 14, color: '#38bdf8' },
-  { name: 'incransom', percentage: 6.0, count: 12, color: '#818cf8' },
-  { name: 'titan', percentage: 4.5, count: 9, color: '#c084fc' },
-  { name: 'xpl0itrs', percentage: 4.0, count: 8, color: '#ff2a5f' }
+  { name: 'qilin', percentage: 19.0, count: 38, color: '#4f46e5' },
+  { name: 'direwolf', percentage: 7.0, count: 14, color: '#0284c7' },
+  { name: 'incransom', percentage: 6.0, count: 12, color: '#059669' },
+  { name: 'titan', percentage: 4.5, count: 9, color: '#7c3aed' },
+  { name: 'xpl0itrs', percentage: 4.0, count: 8, color: '#dc2626' }
 ];
 
 export const MOCK_CONTINENTS = [
-  { name: 'Europe', percentage: 35.0, count: 70, color: '#3b82f6' },
-  { name: 'Amérique du Nord', percentage: 29.0, count: 58, color: '#ff2a5f' },
-  { name: 'Asie', percentage: 14.0, count: 28, color: '#10b981' },
+  { name: 'Europe', percentage: 35.0, count: 70, color: '#0284c7' },
+  { name: 'Amérique du Nord', percentage: 29.0, count: 58, color: '#dc2626' },
+  { name: 'Asie', percentage: 14.0, count: 28, color: '#059669' },
   { name: 'Autres', percentage: 12.5, count: 25, color: '#64748b' },
-  { name: 'Amérique du Sud', percentage: 5.5, count: 11, color: '#f97316' },
-  { name: 'Afrique', percentage: 2.0, count: 4, color: '#eab308' },
-  { name: 'Océanie', percentage: 2.0, count: 4, color: '#a855f7' }
+  { name: 'Amérique du Sud', percentage: 5.5, count: 11, color: '#d97706' }
 ];
 
 export const MOCK_TOP_COUNTRIES = [
@@ -208,22 +285,6 @@ export const MOCK_APT_FORUMS = [
     status: 'ONLINE',
     is_onion: false,
     description: 'Base de données des victimes et groupes cybercriminels répertoriés.'
-  },
-  {
-    id: 'apt-4',
-    name: 'Ransomwatch Index Feed',
-    url: 'https://ransomwatch.telemetry.ltd/#/INDEX',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Monitoring en direct des blogs et sites Tor de fuites d extorsion.'
-  },
-  {
-    id: 'apt-5',
-    name: 'Onion Leak Mirror Alpha',
-    url: 'http://thexfvx7hqcrpgtm.onion',
-    status: 'OFFLINE',
-    is_onion: true,
-    description: 'Miroir .onion de surveillance des groupes APT russes.'
   }
 ];
 
@@ -243,22 +304,6 @@ export const MOCK_UNDERGROUND_FORUMS = [
     status: 'ONLINE',
     is_onion: false,
     description: 'Forum underground d exploits et de développement de malwares.'
-  },
-  {
-    id: 'ug-3',
-    name: 'ALTENEN Deep Market',
-    url: 'https://altenens.is',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Forum historique de carding et d ingénierie sociale.'
-  },
-  {
-    id: 'ug-4',
-    name: 'ALPHV / BlackCat Affiliate Forum',
-    url: 'https://alphv.pro',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Forum de recrutement d affiliés du groupe BlackCat/ALPHV.'
   }
 ];
 
@@ -278,14 +323,6 @@ export const MOCK_TELEGRAM_CHANNELS = [
     status: 'VALID',
     is_onion: false,
     description: 'Canal de fuites de logs RedLine / MetaStealer.'
-  },
-  {
-    id: 'tg-3',
-    name: 'Goblin Free Stealer Logs',
-    url: 'https://t.me/+0ZheKtZ368YxMDBI',
-    status: 'VALID',
-    is_onion: false,
-    description: 'Partage gratuit de logs de stealers pour analyse Threat Intel.'
   }
 ];
 
@@ -333,18 +370,6 @@ export const MOCK_SCRAPER_SOURCES = [
     status: 'ACTIVE',
     lastScraped: new Date().toISOString(),
     itemCount: 1845,
-    isCustom: false
-  },
-  {
-    id: 'src-3',
-    name: 'BleepingComputer - Cyber Crime Feed',
-    url: 'https://www.bleepingcomputer.com/feed/',
-    type: 'RSS / Atom',
-    category: 'Actualités Cyber',
-    frequency: '1 heure',
-    status: 'ACTIVE',
-    lastScraped: new Date().toISOString(),
-    itemCount: 928,
     isCustom: false
   }
 ];

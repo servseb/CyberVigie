@@ -5,7 +5,7 @@ export default function TabNavigation({ activeTab, setActiveTab, scraperCount = 
   const tabs = [
     {
       id: 'victims',
-      label: 'Victimes',
+      label: 'Sociétés Impactées',
       icon: ShieldAlert,
       count: 200,
     },
@@ -42,7 +42,7 @@ export default function TabNavigation({ activeTab, setActiveTab, scraperCount = 
   ];
 
   return (
-    <nav className="border-b border-white/[0.06] bg-[#07090e]/70 backdrop-blur-md sticky top-[57px] z-30 px-4 lg:px-8">
+    <nav className="border-b border-slate-200 bg-white/80 backdrop-blur-md sticky top-[69px] z-30 px-4 lg:px-8">
       <div className="max-w-7xl mx-auto flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -51,19 +51,19 @@ export default function TabNavigation({ activeTab, setActiveTab, scraperCount = 
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer whitespace-nowrap ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold font-sans transition-all duration-200 cursor-pointer whitespace-nowrap ${
                 isActive
-                  ? 'bg-slate-800/90 text-white border border-cyan-500/40 shadow-sm shadow-cyan-500/10'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/50 border border-transparent'
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent'
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
+              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-slate-500'}`} />
               <span>{tab.label}</span>
               <span
                 className={`text-[10px] font-mono px-1.5 py-0.2 rounded-md ${
                   isActive
-                    ? 'bg-cyan-500/20 text-cyan-300 font-semibold'
-                    : 'bg-slate-900 text-slate-500'
+                    ? 'bg-indigo-700 text-indigo-100 font-bold'
+                    : 'bg-slate-200 text-slate-700 font-semibold'
                 }`}
               >
                 {tab.count}

@@ -3,7 +3,6 @@ import {
   Cpu,
   Plus,
   Search,
-  Filter,
   Download,
   Upload,
   Play,
@@ -17,8 +16,7 @@ import {
   Trash2,
   ShieldCheck,
   Terminal,
-  Database,
-  RefreshCw
+  Database
 } from 'lucide-react';
 import ScraperModal from './ScraperModal';
 import { parseFrequencyToMs } from '../App';
@@ -35,13 +33,11 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
   const [runningTestId, setRunningTestId] = useState(null);
   const [testConsoleLogs, setTestConsoleLogs] = useState({});
 
-  // Real-time ticking clock for countdown display
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Calculate live countdown until next scrape
   const getNextScrapeText = (source) => {
     if (source.status !== 'ACTIVE') return 'En pause';
     const freqMs = parseFrequencyToMs(source.frequency);
@@ -64,40 +60,45 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
     return `Dans ${diffSec}s`;
   };
 
-  // Helper generator to simulate extracted victim items from a source
-  const generateVictimsFromSource = (sourceObj, count = 3) => {
-    const sampleGeo = [
-      { country: 'France', code: 'FR' },
-      { country: 'États-Unis', code: 'US' },
-      { country: 'Allemagne', code: 'DE' },
-      { country: 'Royaume-Uni', code: 'GB' },
-      { country: 'Italie', code: 'IT' }
+  const generateVictimsFromSource = (sourceObj, count = 2) => {
+    const companies = [
+      { company: 'Dassault Aviation (Filiale)', sector: 'Aéronautique & Défense', country: 'France', code: 'FR' },
+      { company: 'Thales Defence Systems', sector: 'Défense & Électronique', country: 'France', code: 'FR' },
+      { company: 'Bayer AG Pharma', sector: 'Santé & Pharmacie', country: 'Allemagne', code: 'DE' }
     ];
 
     return Array.from({ length: count }, (_, i) => {
-      const geo = sampleGeo[i % sampleGeo.length];
+      const comp = companies[i % companies.length];
       const timestamp = new Date().toISOString();
       return {
         id: `victim-src-${Date.now()}-${i}`,
-        post_title: `${sourceObj.name} — Fuite & données revendiquées #${i + 1}`,
+        company_name: comp.company,
+        post_title: comp.company,
         group_name: sourceObj.name,
         discovered: timestamp,
         attack_date: timestamp,
-        country: geo.country,
-        country_code: geo.code,
-        website: sourceObj.url.replace(/^https?:\/\//, '').split('/')[0] || 'source-exfiltration.fr',
+        country: comp.country,
+        country_code: comp.code,
+        website: sourceObj.url.replace(/^https?:\/\//, '').split('/')[0] || 'flux-securite.fr',
         screenshot: '',
-        description: `Données sensibles exfiltrées et indexées automatiquement via le scraper [${sourceObj.type}] configuré sur la source ${sourceObj.name}.`,
+        description: `Nouvelles données de la société ${comp.company} extraites via le scraper [${sourceObj.type}] configuré sur ${sourceObj.name}.`,
         claim_url: sourceObj.url,
-        sector: sourceObj.category || 'Threat Intelligence',
-        status: 'RANSOMWARE',
-        isCustomSource: true,
-        sourceName: sourceObj.name
+        sector: comp.sector,
+        status: 'CRITIQUE',
+        data_volume: '1.2 TB',
+        severity_score: 9.3,
+        leaked_data_types: ['Dossiers Techniques', 'Bases SQL', 'Fichiers RH'],
+        iocs: {
+          ips: ['185.220.101.5'],
+          onion: sourceObj.url,
+          hashes: ['e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855']
+        },
+        mitre_ttps: ['T1566 (Phishing)', 'T1486 (Ransomware Impact)'],
+        full_executive_summary: `Extraction automatique cadencée de données de la société ${comp.company}.`
       };
     });
   };
 
-  // Filter logic
   const filteredSources = sources.filter((src) => {
     const matchesSearch =
       src.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -110,12 +111,9 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
-  // Aggregated Stats
   const activeCount = sources.filter((s) => s.status === 'ACTIVE').length;
-  const inactiveCount = sources.filter((s) => s.status === 'INACTIVE').length;
   const totalScrapedItems = sources.reduce((acc, s) => acc + (s.itemCount || 0), 0);
 
-  // Toggle status
   const handleToggleStatus = (id) => {
     setSources((prev) =>
       prev.map((src) =>
@@ -126,14 +124,12 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
     );
   };
 
-  // Delete source
   const handleDeleteSource = (id) => {
     if (window.confirm('Voulez-vous vraiment supprimer cette source de scraping ?')) {
       setSources((prev) => prev.filter((src) => src.id !== id));
     }
   };
 
-  // Run Test Simulation for single source
   const handleRunSingleTest = (source) => {
     setRunningTestId(source.id);
     setTestConsoleLogs((prev) => ({
@@ -149,7 +145,7 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
         ...prev,
         [source.id]: [
           ...(prev[source.id] || []),
-          `[${new Date().toLocaleTimeString()}] HTTP 200 OK — Parsing avec les sélecteurs custom...`
+          `[${new Date().toLocaleTimeString()}] HTTP 200 OK — Parsing en cours...`
         ]
       }));
     }, 600);
@@ -161,7 +157,7 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
         ...prev,
         [source.id]: [
           ...(prev[source.id] || []),
-          `[${new Date().toLocaleTimeString()}] SUCCÈS — Scraper opérationnel ! ${newTestItems.length} nouvelles victimes extraites et injectées.`
+          `[${new Date().toLocaleTimeString()}] SUCCÈS — ${newTestItems.length} nouvelles sociétés extraites avec succès.`
         ]
       }));
 
@@ -183,44 +179,11 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
     }, 1400);
   };
 
-  // Export JSON configuration
-  const handleExportJson = () => {
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(sources, null, 2));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `cybervigie_scrapers_config_${Date.now()}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
-  };
-
-  // Import JSON configuration
-  const handleImportJson = (e) => {
-    const fileReader = new FileReader();
-    if (e.target.files && e.target.files[0]) {
-      fileReader.readAsText(e.target.files[0], 'UTF-8');
-      fileReader.onload = (event) => {
-        try {
-          const parsed = JSON.parse(event.target.result);
-          if (Array.isArray(parsed)) {
-            setSources(parsed);
-            alert(`Configuration importée avec succès ! ${parsed.length} sources chargées.`);
-          } else {
-            alert('Format de fichier JSON invalide. Un tableau de sources est attendu.');
-          }
-        } catch (err) {
-          alert('Erreur lors de la lecture du fichier JSON.');
-        }
-      };
-    }
-  };
-
-  // Save/Update Source
   const handleSaveSource = (sourceToSave) => {
-    const newExtractedItems = generateVictimsFromSource(sourceToSave, 3);
+    const newExtractedItems = generateVictimsFromSource(sourceToSave, 2);
     const updatedSource = {
       ...sourceToSave,
-      itemCount: (sourceToSave.itemCount || 0) + 3,
+      itemCount: (sourceToSave.itemCount || 0) + 2,
       lastScraped: new Date().toISOString()
     };
 
@@ -240,23 +203,23 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Top Banner Notice Hors IA */}
-      <div className="cyber-card p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      {/* Banner */}
+      <div className="cyber-card p-6 bg-white border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+          <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600 shrink-0">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-white font-mono">
-                Moteur de Scraping & Rafraîchissement Automatique Cadencé
+              <h2 className="text-base font-extrabold text-slate-900 font-sans">
+                GESTION DES SOURCES & SCRAPERS CADENCÉS
               </h2>
-              <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">
-                BOUCLE ARRIÈRE-PLAN ACTIVE
+              <span className="text-xs font-mono text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 font-bold">
+                PLANIFICATEUR ACTIF
               </span>
             </div>
-            <p className="text-xs text-slate-400 font-sans mt-0.5">
-              Chaque source active déclenche automatiquement l'extraction et l'actualisation des données selon la fréquence spécifiée (5 min, 15 min, 1h...).
+            <p className="text-xs text-slate-500 font-sans mt-0.5">
+              Extraction automatique des sociétés ciblées selon la cadence configurée (5 min, 15 min, 1h...)
             </p>
           </div>
         </div>
@@ -266,120 +229,61 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
             setEditingSource(null);
             setIsModalOpen(true);
           }}
-          className="px-3.5 py-2 rounded-xl bg-cyan-500 text-slate-950 font-bold font-mono text-xs hover:bg-cyan-400 transition-all flex items-center gap-1.5 shadow-sm cursor-pointer whitespace-nowrap"
+          className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold font-sans text-xs transition-all flex items-center gap-1.5 shadow-md shadow-indigo-500/20 cursor-pointer whitespace-nowrap"
         >
-          <Plus className="w-3.5 h-3.5" />
+          <Plus className="w-4 h-4" />
           <span>Ajouter une Source</span>
         </button>
       </div>
 
-      {/* Overview Stat Cards */}
+      {/* Grid Overview Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="cyber-card p-4 flex items-center justify-between">
+        <div className="cyber-card p-4 bg-white border border-slate-200 flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">Total Sources</span>
-            <div className="text-2xl font-bold text-white font-mono mt-0.5">{sources.length}</div>
-            <span className="text-[10px] font-mono text-cyan-400">Flux & Portails</span>
+            <span className="text-xs font-mono text-slate-500 font-bold uppercase">Total Sources</span>
+            <div className="text-2xl font-extrabold text-slate-900 mt-0.5">{sources.length}</div>
+            <span className="text-xs text-indigo-600 font-semibold">Flux & APIs</span>
           </div>
-          <div className="w-9 h-9 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-            <Globe className="w-4.5 h-4.5" />
+          <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
+            <Globe className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="cyber-card p-4 flex items-center justify-between">
+        <div className="cyber-card p-4 bg-white border border-slate-200 flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">Scrapers Actifs</span>
-            <div className="text-2xl font-bold text-emerald-400 font-mono mt-0.5">{activeCount}</div>
-            <span className="text-[10px] font-mono text-slate-500">{inactiveCount} inactifs</span>
+            <span className="text-xs font-mono text-slate-500 font-bold uppercase">Actifs</span>
+            <div className="text-2xl font-extrabold text-emerald-600 mt-0.5">{activeCount}</div>
+            <span className="text-xs text-slate-500">En cours d extraction</span>
           </div>
-          <div className="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-            <CheckCircle2 className="w-4.5 h-4.5" />
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+            <CheckCircle2 className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="cyber-card p-4 flex items-center justify-between">
+        <div className="cyber-card p-4 bg-white border border-slate-200 flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">Boucle Auto-Scrape</span>
-            <div className="text-2xl font-bold text-purple-400 font-mono mt-0.5">10s</div>
-            <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-              Planificateur actif
-            </span>
+            <span className="text-xs font-mono text-slate-500 font-bold uppercase">Boucle Heartbeat</span>
+            <div className="text-2xl font-extrabold text-purple-600 mt-0.5">10s</div>
+            <span className="text-xs text-emerald-600 font-semibold">Vérification temps réel</span>
           </div>
-          <div className="w-9 h-9 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-            <Clock className="w-4.5 h-4.5" />
+          <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600">
+            <Clock className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="cyber-card p-4 flex items-center justify-between">
+        <div className="cyber-card p-4 bg-white border border-slate-200 flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">Actes Répertoriés</span>
-            <div className="text-2xl font-bold text-amber-400 font-mono mt-0.5">{totalScrapedItems.toLocaleString()}</div>
-            <span className="text-[10px] font-mono text-slate-500">Données extraites</span>
+            <span className="text-xs font-mono text-slate-500 font-bold uppercase">Actes Répertoriés</span>
+            <div className="text-2xl font-extrabold text-slate-900 mt-0.5">{totalScrapedItems.toLocaleString()}</div>
+            <span className="text-xs text-slate-500">Éléments indexés</span>
           </div>
-          <div className="w-9 h-9 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-            <Database className="w-4.5 h-4.5" />
+          <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700">
+            <Database className="w-5 h-5" />
           </div>
         </div>
       </div>
 
-      {/* Toolbar Controls */}
-      <div className="cyber-card p-3 flex flex-col md:flex-row items-center justify-between gap-3">
-        {/* Search */}
-        <div className="relative w-full md:w-72">
-          <input
-            type="text"
-            placeholder="Rechercher par nom, URL..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-slate-950/80 border border-white/[0.08] text-xs font-mono text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
-          />
-          <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
-        </div>
-
-        {/* Filters & Actions */}
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-lg bg-slate-950/80 border border-white/[0.08] text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-500"
-          >
-            <option value="ALL">Toutes les Catégories</option>
-            <option value="CERT / ANSSI">CERT / ANSSI</option>
-            <option value="Ransomware">Ransomware</option>
-            <option value="APT Forums">APT Forums</option>
-            <option value="Underground Forums">Underground Forums</option>
-            <option value="Telegram">Telegram</option>
-            <option value="Actualités Cyber">Actualités Cyber</option>
-          </select>
-
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-lg bg-slate-950/80 border border-white/[0.08] text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-500"
-          >
-            <option value="ALL">Tous les Statuts</option>
-            <option value="ACTIVE">Actifs uniquement</option>
-            <option value="INACTIVE">Inactifs uniquement</option>
-          </select>
-
-          <label className="px-3 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-300 border border-white/[0.08] text-xs font-mono flex items-center gap-1.5 cursor-pointer transition-all">
-            <Upload className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Import</span>
-            <input type="file" accept=".json" onChange={handleImportJson} className="hidden" />
-          </label>
-
-          <button
-            onClick={handleExportJson}
-            className="px-3 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-300 border border-white/[0.08] text-xs font-mono flex items-center gap-1.5 cursor-pointer transition-all"
-          >
-            <Download className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Export</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Sources Grid */}
+      {/* Sources Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {filteredSources.map((source) => {
           const isTesting = runningTestId === source.id;
@@ -387,50 +291,19 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
           const nextScrapeStr = getNextScrapeText(source);
 
           return (
-            <div
-              key={source.id}
-              className={`cyber-card p-4 transition-all ${
-                source.status === 'ACTIVE'
-                  ? 'hover:border-cyan-500/30'
-                  : 'opacity-70'
-              }`}
-            >
-              {/* Card Header */}
+            <div key={source.id} className="cyber-card p-5 bg-white border border-slate-200 hover:border-indigo-300 transition-all space-y-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <div className="mt-0.5">
-                    {source.type.includes('RSS') ? (
-                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-                        <Rss className="w-4 h-4" />
-                      </div>
-                    ) : source.type.includes('API') ? (
-                      <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-                        <Cpu className="w-4 h-4" />
-                      </div>
-                    ) : source.type.includes('Telegram') ? (
-                      <div className="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
-                        <Radio className="w-4 h-4" />
-                      </div>
-                    ) : (
-                      <div className="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-                        <Globe className="w-4 h-4" />
-                      </div>
-                    )}
+                  <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600 shrink-0">
+                    <Globe className="w-5 h-5" />
                   </div>
-
                   <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-xs font-bold text-white font-sans">{source.name}</h3>
-                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-slate-950 text-slate-400 border border-white/[0.06]">
-                        {source.category}
-                      </span>
-                    </div>
-
+                    <h3 className="text-sm font-bold text-slate-900 font-sans">{source.name}</h3>
                     <a
                       href={source.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[11px] font-mono text-cyan-400 hover:underline flex items-center gap-1 mt-0.5 truncate max-w-sm"
+                      className="text-xs font-mono text-indigo-600 hover:underline flex items-center gap-1 mt-0.5 truncate max-w-sm"
                     >
                       <span className="truncate">{source.url}</span>
                       <ExternalLink className="w-3 h-3 flex-shrink-0" />
@@ -440,78 +313,53 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
 
                 <button
                   onClick={() => handleToggleStatus(source.id)}
-                  className={`px-2 py-0.5 rounded font-mono text-[9px] font-bold border transition-all cursor-pointer ${
+                  className={`px-3 py-1 rounded-full font-mono text-xs font-bold border cursor-pointer ${
                     source.status === 'ACTIVE'
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20'
-                      : 'bg-slate-950 text-slate-400 border-white/[0.06] hover:text-white'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      : 'bg-slate-100 text-slate-600 border-slate-200'
                   }`}
                 >
                   {source.status === 'ACTIVE' ? '● ACTIF' : '○ INACTIF'}
                 </button>
               </div>
 
-              {/* Scraper Details Grid */}
-              <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-white/[0.05] text-[10px] font-mono">
-                <div className="bg-slate-950/60 p-1.5 rounded-md border border-white/[0.04]">
-                  <span className="text-slate-500 block text-[8px] uppercase">Format</span>
-                  <span className="text-slate-200 font-semibold">{source.type}</span>
+              {/* Specs */}
+              <div className="grid grid-cols-3 gap-2 text-xs font-mono">
+                <div className="bg-slate-50 p-2 rounded-xl border border-slate-200">
+                  <span className="text-slate-500 block text-[9px] uppercase">Format</span>
+                  <span className="text-slate-900 font-bold">{source.type}</span>
                 </div>
-                <div className="bg-slate-950/60 p-1.5 rounded-md border border-white/[0.04]">
-                  <span className="text-slate-500 block text-[8px] uppercase">Fréquence</span>
-                  <span className="text-purple-300 font-semibold">{source.frequency}</span>
+                <div className="bg-slate-50 p-2 rounded-xl border border-slate-200">
+                  <span className="text-slate-500 block text-[9px] uppercase">Fréquence</span>
+                  <span className="text-indigo-700 font-bold">{source.frequency}</span>
                 </div>
-                <div className="bg-slate-950/60 p-1.5 rounded-md border border-white/[0.04]">
-                  <span className="text-slate-500 block text-[8px] uppercase">Prochain Scrape</span>
-                  <span className="text-cyan-400 font-semibold truncate block">{nextScrapeStr}</span>
+                <div className="bg-slate-50 p-2 rounded-xl border border-slate-200">
+                  <span className="text-slate-500 block text-[9px] uppercase">Prochain Scrape</span>
+                  <span className="text-emerald-700 font-bold truncate block">{nextScrapeStr}</span>
                 </div>
               </div>
 
-              {/* Console Output */}
-              {logs.length > 0 && (
-                <div className="mt-2.5 p-2.5 rounded-lg bg-slate-950 border border-white/[0.06] font-mono text-[10px] space-y-0.5">
-                  <div className="flex items-center gap-1 text-cyan-400 font-bold mb-0.5">
-                    <Terminal className="w-3 h-3" />
-                    <span>Journal de test :</span>
-                  </div>
-                  {logs.map((log, i) => (
-                    <div key={i} className="text-slate-300 truncate text-[9px]">
-                      {log}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Action Buttons */}
-              <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/[0.05]">
-                <span className="text-[9px] font-mono text-slate-500">
+              {/* Actions */}
+              <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                <span className="text-xs font-mono text-slate-400">
                   Dernier : {source.lastScraped ? new Date(source.lastScraped).toLocaleTimeString() : 'N/A'}
                 </span>
 
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleRunSingleTest(source)}
                     disabled={isTesting}
-                    className="px-2.5 py-1 rounded-md bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/20 text-[11px] font-mono flex items-center gap-1 cursor-pointer transition-all disabled:opacity-50"
+                    className="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-sans font-bold flex items-center gap-1 cursor-pointer transition-all disabled:opacity-50"
                   >
-                    <Play className={`w-3 h-3 ${isTesting ? 'animate-spin' : ''}`} />
+                    <Play className={`w-3.5 h-3.5 ${isTesting ? 'animate-spin' : ''}`} />
                     <span>{isTesting ? 'Scraping...' : 'Tester'}</span>
                   </button>
 
                   <button
-                    onClick={() => {
-                      setEditingSource(source);
-                      setIsModalOpen(true);
-                    }}
-                    className="px-2 py-1 rounded-md bg-slate-950 hover:bg-slate-800 text-slate-300 border border-white/[0.08] text-[11px] font-mono cursor-pointer transition-all"
-                  >
-                    <Edit2 className="w-3 h-3" />
-                  </button>
-
-                  <button
                     onClick={() => handleDeleteSource(source.id)}
-                    className="px-2 py-1 rounded-md bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-[11px] font-mono cursor-pointer transition-all"
+                    className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-sans font-bold cursor-pointer transition-all"
                   >
-                    <Trash2 className="w-3 h-3" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
@@ -520,7 +368,6 @@ export default function ScraperConfig({ sources, setSources, onAddExtractedVicti
         })}
       </div>
 
-      {/* Scraper Builder Modal */}
       <ScraperModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
