@@ -344,7 +344,10 @@ export default function App() {
         )}
 
         {activeTab === 'monthly-synthesis' && (
-          <MonthlyCountrySynthesis victims={victims} />
+          <MonthlyCountrySynthesis
+            victims={victims}
+            onSelectVictim={(victim) => setSelectedVictim(victim)}
+          />
         )}
 
         {activeTab === 'telegram' && (
