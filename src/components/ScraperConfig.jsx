@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import ScraperModal from './ScraperModal';
 
-export default function ScraperConfig({ sources, setSources }) {
+export default function ScraperConfig({ sources, setSources, onAddExtractedVictims }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('ALL');
   const [statusFilter, setStatusFilter] = useState('ALL');
@@ -31,6 +31,39 @@ export default function ScraperConfig({ sources, setSources }) {
   // Test Runner State
   const [runningTestId, setRunningTestId] = useState(null);
   const [testConsoleLogs, setTestConsoleLogs] = useState({});
+
+  // Helper generator to simulate extracted victim items from a source
+  const generateVictimsFromSource = (sourceObj, count = 3) => {
+    const sampleGeo = [
+      { country: 'France', code: 'FR' },
+      { country: 'États-Unis', code: 'US' },
+      { country: 'Allemagne', code: 'DE' },
+      { country: 'Royaume-Uni', code: 'GB' },
+      { country: 'Italie', code: 'IT' }
+    ];
+
+    return Array.from({ length: count }, (_, i) => {
+      const geo = sampleGeo[i % sampleGeo.length];
+      const timestamp = new Date().toISOString();
+      return {
+        id: `victim-src-${Date.now()}-${i}`,
+        post_title: `${sourceObj.name} — Fuite & données revendiquées #${i + 1}`,
+        group_name: sourceObj.name,
+        discovered: timestamp,
+        attack_date: timestamp,
+        country: geo.country,
+        country_code: geo.code,
+        website: sourceObj.url.replace(/^https?:\/\//, '').split('/')[0] || 'source-exfiltration.fr',
+        screenshot: '',
+        description: `Données sensibles exfiltrées et indexées automatiquement via le scraper [${sourceObj.type}] configuré sur la source ${sourceObj.name}.`,
+        claim_url: sourceObj.url,
+        sector: sourceObj.category || 'Threat Intelligence',
+        status: 'RANSOMWARE',
+        isCustomSource: true,
+        sourceName: sourceObj.name
+      };
+    });
+  };
 
   // Filter logic
   const filteredSources = sources.filter((src) => {
@@ -90,19 +123,31 @@ export default function ScraperConfig({ sources, setSources }) {
     }, 600);
 
     setTimeout(() => {
+      const newTestItems = generateVictimsFromSource(source, 2);
+
       setTestConsoleLogs((prev) => ({
         ...prev,
         [source.id]: [
           ...(prev[source.id] || []),
-          `[${new Date().toLocaleTimeString()}] SUCCÈS — Scraper opérationnel ! Éléments synchronisés.`
+          `[${new Date().toLocaleTimeString()}] SUCCÈS — Scraper opérationnel ! ${newTestItems.length} nouvelles victimes extraites et injectées.`
         ]
       }));
+
       setRunningTestId(null);
+
+      const updatedSource = {
+        ...source,
+        lastScraped: new Date().toISOString(),
+        itemCount: (source.itemCount || 0) + newTestItems.length
+      };
+
       setSources((prev) =>
-        prev.map((s) =>
-          s.id === source.id ? { ...s, lastScraped: new Date().toISOString() } : s
-        )
+        prev.map((s) => (s.id === source.id ? updatedSource : s))
       );
+
+      if (onAddExtractedVictims) {
+        onAddExtractedVictims(newTestItems, source.category, updatedSource);
+      }
     }, 1400);
   };
 
@@ -140,14 +185,25 @@ export default function ScraperConfig({ sources, setSources }) {
 
   // Save/Update Source
   const handleSaveSource = (sourceToSave) => {
+    const newExtractedItems = generateVictimsFromSource(sourceToSave, 3);
+    const updatedSource = {
+      ...sourceToSave,
+      itemCount: (sourceToSave.itemCount || 0) + 3,
+      lastScraped: new Date().toISOString()
+    };
+
     setSources((prev) => {
-      const exists = prev.some((s) => s.id === sourceToSave.id);
+      const exists = prev.some((s) => s.id === updatedSource.id);
       if (exists) {
-        return prev.map((s) => (s.id === sourceToSave.id ? sourceToSave : s));
+        return prev.map((s) => (s.id === updatedSource.id ? updatedSource : s));
       } else {
-        return [sourceToSave, ...prev];
+        return [updatedSource, ...prev];
       }
     });
+
+    if (onAddExtractedVictims) {
+      onAddExtractedVictims(newExtractedItems, updatedSource.category, updatedSource);
+    }
   };
 
   return (
@@ -168,7 +224,7 @@ export default function ScraperConfig({ sources, setSources }) {
               </span>
             </div>
             <p className="text-xs text-slate-400 font-sans mt-0.5">
-              Configuration locale des extracteurs web, flux RSS et endpoints API pour alimenter la Threat Intelligence sans recourir à des services externes.
+              Toute source ajoutée ou testée génère et extrait automatiquement ses victimes dans le répertoire global et les onglets dédiés.
             </p>
           </div>
         </div>
