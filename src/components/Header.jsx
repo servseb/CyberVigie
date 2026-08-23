@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Rocket, Mail, Sparkles, RefreshCw } from 'lucide-react';
+import { Rocket, Mail, Sparkles, RefreshCw, ShieldAlert } from 'lucide-react';
 
 export default function Header({ onOpenEmailModal, onManualRefresh, isRefreshing, isLive, victimCount }) {
   const [timeStr, setTimeStr] = useState('');
@@ -16,11 +16,11 @@ export default function Header({ onOpenEmailModal, onManualRefresh, isRefreshing
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b-4 border-sky-200 shadow-md">
-      {/* Pixar Cartoon Ticker Bar */}
+      {/* SOC Live Ticker Bar */}
       <div className="w-full bg-sky-900 border-b-2 border-sky-800 py-1 px-3 sm:px-4 overflow-hidden flex items-center text-[11px] sm:text-xs font-mono text-sky-100">
         <div className="flex items-center gap-1.5 shrink-0 pr-2.5 border-r border-sky-700 z-10 bg-sky-900 font-bold text-amber-300 uppercase">
           <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" style={{ animationDuration: '4s' }} />
-          <span className="hidden sm:inline">ALERTES CYBER PIXAR 🚀 :</span>
+          <span className="hidden sm:inline">ALERTES CYBER EN DIRECT 🚀 :</span>
           <span className="sm:hidden">ALERTES 🚀 :</span>
         </div>
 
@@ -50,13 +50,13 @@ export default function Header({ onOpenEmailModal, onManualRefresh, isRefreshing
         </div>
       </div>
 
-      {/* Main Pixar Header Content */}
+      {/* Main SOC Header Content */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-3">
         {/* Brand & Mascot */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           <div className="relative flex items-center justify-center cursor-pointer group">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-500 border-2 border-sky-300 flex items-center justify-center text-white shadow-md shadow-sky-500/30 group-hover:scale-105 transition-transform animate-bounce-soft shrink-0">
-              <Rocket className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <ShieldAlert className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <span className="absolute -top-1 -right-1 flex h-4 w-4">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
@@ -67,7 +67,7 @@ export default function Header({ onOpenEmailModal, onManualRefresh, isRefreshing
           <div>
             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
               <h1 className="text-base sm:text-xl font-extrabold tracking-tight text-slate-900 font-sans uppercase flex items-center gap-1.5">
-                CYBERVIGIE <span className="text-sky-500 font-black text-[11px] sm:text-sm bg-sky-100 px-2 py-0.5 rounded-full border border-sky-200">PIXAR 3D 🎨</span>
+                CYBERVIGIE <span className="text-sky-500 font-black text-[11px] sm:text-sm bg-sky-100 px-2 py-0.5 rounded-full border border-sky-200">SOC 3D 🛡️</span>
               </h1>
               <span className="text-[10px] sm:text-xs font-sans font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-300 flex items-center gap-1">
                 <span>🔥</span> DEFCON 2
@@ -83,7 +83,7 @@ export default function Header({ onOpenEmailModal, onManualRefresh, isRefreshing
               )}
             </div>
             <p className="text-[11px] sm:text-xs text-sky-700 hidden sm:block font-sans font-bold mt-0.5">
-              L'Aventure Cyber 3D — Surveillance Ludique & Souveraine des Entreprises
+              Plateforme Souveraine de Traçabilité des Sociétés & Threat Intelligence
             </p>
           </div>
         </div>

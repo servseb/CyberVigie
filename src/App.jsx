@@ -367,12 +367,12 @@ export default function App() {
         )}
       </main>
 
-      {/* Modern Pixar Footer */}
+      {/* Modern SOC Command Center Footer */}
       <footer className="border-t-4 border-sky-100 bg-white py-6 px-4 lg:px-8 text-center text-xs font-sans text-sky-800 font-bold">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
-            <span>CYBERVIGIE PIXAR 3D — Plateforme Souveraine de Traçabilité des Sociétés v2.4</span>
+            <span>CYBERVIGIE SOC COMMAND CENTER 3D — Plateforme Souveraine de Traçabilité v2.4</span>
           </div>
           <div>
             Données certifiées ANSSI, CERT-FR & ransomware.live
