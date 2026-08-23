@@ -8,6 +8,11 @@
   --pixar-border: #bae6fd;
 }
 
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
 body {
   background-color: #f0f9ff;
   background-image: 
@@ -21,6 +26,7 @@ body {
   padding: 0;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
 }
 
 code, kbd, pre, .font-mono {
@@ -39,7 +45,7 @@ code, kbd, pre, .font-mono {
 .pixar-card:hover {
   border-color: #38bdf8;
   box-shadow: var(--pixar-shadow-hover);
-  transform: translateY(-4px) rotate(0.5deg);
+  transform: translateY(-3px) rotate(0.3deg);
 }
 
 /* Pixar 3D Pushable Button */
@@ -48,6 +54,7 @@ code, kbd, pre, .font-mono {
   transition: all 0.15s ease;
   box-shadow: 0 5px 0 #0284c7, 0 8px 15px rgba(2, 132, 199, 0.25);
   border-radius: 1rem;
+  min-height: 40px;
 }
 
 .pixar-btn-3d:active {
@@ -61,6 +68,7 @@ code, kbd, pre, .font-mono {
   transition: all 0.15s ease;
   box-shadow: 0 5px 0 #e11d48, 0 8px 15px rgba(225, 29, 72, 0.25);
   border-radius: 1rem;
+  min-height: 40px;
 }
 
 .pixar-btn-rose-3d:active {
@@ -119,8 +127,8 @@ code, kbd, pre, .font-mono {
 
 /* Fine Scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #e0f2fe;
@@ -171,4 +179,15 @@ code, kbd, pre, .font-mono {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+
+/* Responsive Touch Adjustments for Mobile Smartphones */
+@media (max-width: 640px) {
+  .pixar-card {
+    border-radius: 1.25rem;
+    padding: 1rem;
+  }
+  .pixar-btn-3d, .pixar-btn-rose-3d {
+    border-radius: 0.75rem;
+  }
 }

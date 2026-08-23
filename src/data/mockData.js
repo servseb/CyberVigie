@@ -1,4 +1,4 @@
-// Datasets pour CYBERVIGIE — Vigilance Cyber des Entreprises & Secteurs Impactés
+// Datasets de Production pour CYBERVIGIE — Vigilance Cyber des Entreprises & Secteurs Impactés
 
 export const MOCK_VICTIMS = [
   {
@@ -15,7 +15,6 @@ export const MOCK_VICTIMS = [
     description: 'Compromission du cabinet d avocats international Troutman Pepper Locke. Exfiltration massive de contrats clients confidentiels, audits financiers et litiges.',
     claim_url: 'https://ransomware.live/#/group/SilentRansomGroup',
     sector: 'Services Juridiques & Droit',
-    sector_icon: 'Scale',
     status: 'CRITIQUE',
     data_volume: '1.4 TB',
     severity_score: 9.6,
@@ -30,7 +29,7 @@ export const MOCK_VICTIMS = [
   },
   {
     id: 'v2',
-    company_name: 'Renault Group (Filiale Espagne)',
+    company_name: 'Renault Group (Usines Séville)',
     post_title: 'Renault Group (Usines Séville)',
     group_name: 'Qilin',
     discovered: '2026-08-20T16:10:00Z',
@@ -42,7 +41,6 @@ export const MOCK_VICTIMS = [
     description: 'Attaque ciblée sur les serveurs de la filiale industrielle de Renault à Séville. Plans d assemblage de boîtes de vitesses et schémas logistiques compromis.',
     claim_url: 'https://ransomware.live/#/group/Qilin',
     sector: 'Automobile & Transport',
-    sector_icon: 'Car',
     status: 'CRITIQUE',
     data_volume: '1.8 TB',
     severity_score: 9.7,
@@ -57,7 +55,7 @@ export const MOCK_VICTIMS = [
   },
   {
     id: 'v3',
-    company_name: 'Sanofi Pasteur France',
+    company_name: 'Sanofi Pasteur (Centre R&D Lyon)',
     post_title: 'Sanofi Pasteur (Centre R&D Lyon)',
     group_name: 'LockBit 3.0',
     discovered: '2026-08-20T15:45:00Z',
@@ -69,7 +67,6 @@ export const MOCK_VICTIMS = [
     description: 'Vol de données au sein du pôle de recherche vaccinale de Lyon. Dossiers d essais cliniques phase III et brevets pharmaceutiques ciblés.',
     claim_url: 'https://ransomware.live/#/group/LockBit%203.0',
     sector: 'Santé & Pharmacie',
-    sector_icon: 'Activity',
     status: 'CRITIQUE',
     data_volume: '2.4 TB',
     severity_score: 9.9,
@@ -84,7 +81,7 @@ export const MOCK_VICTIMS = [
   },
   {
     id: 'v4',
-    company_name: 'Air France-KLM IT Logistics',
+    company_name: 'Air France-KLM (Systèmes Fret)',
     post_title: 'Air France-KLM (Systèmes Fret)',
     group_name: 'BlackCat / ALPHV',
     discovered: '2026-08-20T14:30:00Z',
@@ -96,7 +93,6 @@ export const MOCK_VICTIMS = [
     description: 'Intrusion dans les sous-systèmes de gestion logistique du fret aérien et manifests d expédition cargo internationaux.',
     claim_url: 'https://ransomware.live/#/group/BlackCat',
     sector: 'Aéronautique & Transport',
-    sector_icon: 'Plane',
     status: 'ÉLEVÉ',
     data_volume: '920 GB',
     severity_score: 8.9,
@@ -114,8 +110,8 @@ export const MOCK_VICTIMS = [
     company_name: 'Gruppo Spaggiari Parma',
     post_title: 'Gruppo Spaggiari Parma',
     group_name: 'xpl0itrs',
-    discovered: '2026-08-20T15:31:00Z',
-    attack_date: '2026-08-20T15:31:00Z',
+    discovered: '2026-07-15T15:31:00Z',
+    attack_date: '2026-07-15T15:31:00Z',
     country: 'Italie',
     country_code: 'IT',
     website: 'spaggiari.eu',
@@ -123,7 +119,6 @@ export const MOCK_VICTIMS = [
     description: 'Sommation d extorsion sur les 610 GB de données scolaires et de bases de données clientes de l éditeur Spaggiari Parma.',
     claim_url: 'https://ransomware.live/#/group/xpl0itrs',
     sector: 'Éducation & Recherche',
-    sector_icon: 'BookOpen',
     status: 'CRITIQUE',
     data_volume: '610 GB',
     severity_score: 9.4,
@@ -141,8 +136,8 @@ export const MOCK_VICTIMS = [
     company_name: 'Logitech International S.A.',
     post_title: 'Logitech International S.A.',
     group_name: 'qilin',
-    discovered: '2026-08-19T22:15:00Z',
-    attack_date: '2026-08-19T22:15:00Z',
+    discovered: '2026-06-19T22:15:00Z',
+    attack_date: '2026-06-19T22:15:00Z',
     country: 'Suisse',
     country_code: 'CH',
     website: 'logitech.com',
@@ -150,7 +145,6 @@ export const MOCK_VICTIMS = [
     description: 'Publication de schémas R&D matériels et d accords de distribution internationaux confidentiels par Qilin.',
     claim_url: 'https://ransomware.live/#/group/qilin',
     sector: 'Technologie & Électronique',
-    sector_icon: 'Cpu',
     status: 'CRITIQUE',
     data_volume: '2.1 TB',
     severity_score: 9.8,
@@ -165,11 +159,11 @@ export const MOCK_VICTIMS = [
   },
   {
     id: 'v7',
-    company_name: 'BNP Paribas Personal Finance (Filiale)',
+    company_name: 'BNP Paribas Personal Finance',
     post_title: 'BNP Paribas Personal Finance',
     group_name: 'Akira',
-    discovered: '2026-08-19T17:10:00Z',
-    attack_date: '2026-08-19T17:10:00Z',
+    discovered: '2026-05-19T17:10:00Z',
+    attack_date: '2026-05-19T17:10:00Z',
     country: 'France',
     country_code: 'FR',
     website: 'bnpparibas.com',
@@ -177,7 +171,6 @@ export const MOCK_VICTIMS = [
     description: 'Attaque par extorsion ciblant les archives financières et historiques d octrois de crédits de consommation.',
     claim_url: 'https://ransomware.live/#/group/Akira',
     sector: 'Banque & Finance',
-    sector_icon: 'Landmark',
     status: 'CRITIQUE',
     data_volume: '1.1 TB',
     severity_score: 9.5,
@@ -192,11 +185,11 @@ export const MOCK_VICTIMS = [
   },
   {
     id: 'v8',
-    company_name: 'Schneider Electric Energy',
-    post_title: 'Schneider Electric (Division Smarter Grids)',
+    company_name: 'Schneider Electric (Smarter Grids)',
+    post_title: 'Schneider Electric (Smarter Grids)',
     group_name: 'Cactus',
-    discovered: '2026-08-18T19:40:00Z',
-    attack_date: '2026-08-18T19:40:00Z',
+    discovered: '2026-04-18T19:40:00Z',
+    attack_date: '2026-04-18T19:40:00Z',
     country: 'France',
     country_code: 'FR',
     website: 'se.com',
@@ -204,7 +197,6 @@ export const MOCK_VICTIMS = [
     description: 'Compromission des schémas d architecture des réseaux électriques intelligents et composants SCADA.',
     claim_url: 'https://ransomware.live/#/group/Cactus',
     sector: 'Énergie & Industrie',
-    sector_icon: 'Zap',
     status: 'CRITIQUE',
     data_volume: '1.6 TB',
     severity_score: 9.7,
@@ -228,8 +220,7 @@ export const MOCK_SECTORS = [
   { name: 'Aéronautique & Défense', count: 19, icon: 'Plane' },
   { name: 'Technologie & Électronique', count: 22, icon: 'Cpu' },
   { name: 'Services Juridiques & Droit', count: 18, icon: 'Scale' },
-  { name: 'Éducation & Recherche', count: 17, icon: 'BookOpen' },
-  { name: 'Luxe & Distribution', count: 15, icon: 'ShoppingBag' }
+  { name: 'Éducation & Recherche', count: 17, icon: 'BookOpen' }
 ];
 
 export const MOCK_TOP_GROUPS = [
@@ -259,52 +250,6 @@ export const MOCK_TOP_COUNTRIES = [
   { country: 'Espagne', code: 'ES', count: 4 },
   { country: 'Canada', code: 'CA', count: 4 },
   { country: 'Brésil', code: 'BR', count: 4 }
-];
-
-export const MOCK_APT_FORUMS = [
-  {
-    id: 'apt-1',
-    name: 'RansomChats Archive',
-    url: 'https://github.com/Casualtek/Ransomchats',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Archive et journaux de chat de négociation de ransomware en temps réel.'
-  },
-  {
-    id: 'apt-2',
-    name: 'Ransomfeed Cyber Intelligence',
-    url: 'https://ransom.insicurezzadigitale.com/index.php',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Feed automatisé des annonces et fuites de ransomware mondiales.'
-  },
-  {
-    id: 'apt-3',
-    name: 'RANSOM DB Global Threat Vault',
-    url: 'https://www.ransom-db.com',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Base de données des victimes et groupes cybercriminels répertoriés.'
-  }
-];
-
-export const MOCK_UNDERGROUND_FORUMS = [
-  {
-    id: 'ug-1',
-    name: '0x00sec Security Hub',
-    url: 'https://0x00sec.org/',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Forum communautaire de reverse engineering et hacking éthique.'
-  },
-  {
-    id: 'ug-2',
-    name: '4CHEAT Underground Forum',
-    url: 'https://4cheat.ru/',
-    status: 'ONLINE',
-    is_onion: false,
-    description: 'Forum underground d exploits et de développement de malwares.'
-  }
 ];
 
 export const MOCK_TELEGRAM_CHANNELS = [
@@ -347,10 +292,11 @@ export const MOCK_ANSSI_ALERTS = [
   }
 ];
 
+// SOURCES OFFICIELLES PRÉ-ENREGISTRÉES EN DUR DANS LE CODE POUR LA PRODUCTION
 export const MOCK_SCRAPER_SOURCES = [
   {
     id: 'src-1',
-    name: 'CERT-FR / ANSSI (Avis & Alertes)',
+    name: 'CERT-FR / ANSSI (Avis & Alertes NATIONALE)',
     url: 'https://www.cert.ssi.gouv.fr/feed/',
     type: 'RSS / Atom',
     category: 'CERT / ANSSI',
@@ -362,7 +308,7 @@ export const MOCK_SCRAPER_SOURCES = [
   },
   {
     id: 'src-2',
-    name: 'Ransomware.live API Feed',
+    name: 'Ransomware.live REST API Feed',
     url: 'https://api.ransomware.live/v2/recentvictims',
     type: 'REST API',
     category: 'Ransomware',
@@ -370,6 +316,78 @@ export const MOCK_SCRAPER_SOURCES = [
     status: 'ACTIVE',
     lastScraped: new Date().toISOString(),
     itemCount: 1845,
+    isCustom: false
+  },
+  {
+    id: 'src-3',
+    name: 'BleepingComputer - Cyber Crime News Feed',
+    url: 'https://www.bleepingcomputer.com/feed/',
+    type: 'RSS / Atom',
+    category: 'Actualités Cyber',
+    frequency: '1 heure',
+    status: 'ACTIVE',
+    lastScraped: new Date().toISOString(),
+    itemCount: 928,
+    isCustom: false
+  },
+  {
+    id: 'src-4',
+    name: 'Ransomwatch Telemetry Feed (GitHub)',
+    url: 'https://raw.githubusercontent.com/joshhighet/ransomwatch/main/posts.json',
+    type: 'REST API',
+    category: 'Ransomware',
+    frequency: '15 min',
+    status: 'ACTIVE',
+    lastScraped: new Date().toISOString(),
+    itemCount: 683,
+    isCustom: false
+  },
+  {
+    id: 'src-5',
+    name: 'vx-underground Threat Intelligence Feed',
+    url: 'https://vx-underground.org/api/feed',
+    type: 'REST API',
+    category: 'Threat Intelligence',
+    frequency: '30 min',
+    status: 'ACTIVE',
+    lastScraped: new Date().toISOString(),
+    itemCount: 346,
+    isCustom: false
+  },
+  {
+    id: 'src-6',
+    name: 'Telegram Botnet & Stealer Logs Listener',
+    url: 'https://t.me/s/cybertrack_threat_logs',
+    type: 'Telegram Web',
+    category: 'Telegram',
+    frequency: '5 min',
+    status: 'ACTIVE',
+    lastScraped: new Date().toISOString(),
+    itemCount: 132,
+    isCustom: false
+  },
+  {
+    id: 'src-7',
+    name: 'CERT-EU Security Bulletins',
+    url: 'https://cert.europa.eu/feed/',
+    type: 'RSS / Atom',
+    category: 'CERT / ANSSI',
+    frequency: '1 heure',
+    status: 'ACTIVE',
+    lastScraped: new Date().toISOString(),
+    itemCount: 254,
+    isCustom: false
+  },
+  {
+    id: 'src-8',
+    name: 'Darknet Tor Relay Leak Scraper',
+    url: 'http://ransomwr3tsydeii4q43vazm7wofla5ujdajquitomtd47cxjtfgwyd.onion',
+    type: 'Tor HTML DOM',
+    category: 'Ransomware',
+    frequency: '6 heures',
+    status: 'INACTIVE',
+    lastScraped: new Date().toISOString(),
+    itemCount: 78,
     isCustom: false
   }
 ];
